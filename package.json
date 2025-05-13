@@ -4,25 +4,35 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "ponder dev",
-    "start": "ponder start",
-    "db": "ponder db",
-    "codegen": "ponder codegen",
-    "lint": "eslint .",
-    "typecheck": "tsc"
+    "lint": "pnpm --filter '@ponder-template/*' lint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "ponder": "^0.10.26",
-    "hono": "^4.5.0",
     "viem": "^2.21.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@types/node": "^20.9.0",
-    "eslint": "^8.53.0",
-    "eslint-config-ponder": "^0.10.26",
-    "typescript": "^5.2.2"
+    "concurrently": "^9.1.2",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-import-resolver-typescript": "^3.8.3",
+    "eslint-plugin-import-x": "^4.6.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "3.5.1",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1"
   },
   "engines": {
     "node": ">=18.14"
-  }
+  },
+  "packageManager": "pnpm@9.13.2+sha1.969cc200a41db98449afee1bfa7578b3ce6ff330"
 }
