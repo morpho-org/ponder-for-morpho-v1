@@ -26,7 +26,7 @@ export const market = onchainTable(
     lastUpdate: t.bigint().notNull(),
     fee: t.bigint().notNull().default(0n),
 
-    // AdaptiveCurveIRM fields
+    // AdaptiveCurveIrm fields
     rateAtTarget: t.bigint().notNull().default(0n),
   }),
   (table) => ({

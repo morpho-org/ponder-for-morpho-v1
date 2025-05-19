@@ -22,20 +22,14 @@ ponder.on("Morpho:CreateMarket", async ({ event, context }) => {
 ponder.on("Morpho:SetFee", async ({ event, context }) => {
   // Row must exist because `SetFee` cannot preceed `CreateMarket`.
   await context.db
-    .update(market, {
-      chainId: context.network.chainId,
-      id: event.args.id,
-    })
+    .update(market, { chainId: context.network.chainId, id: event.args.id })
     .set({ fee: event.args.newFee, lastUpdate: event.block.timestamp });
 });
 
 ponder.on("Morpho:AccrueInterest", async ({ event, context }) => {
   // Row must exist because `AccrueInterest` cannot preceed `CreateMarket`.
   await context.db
-    .update(market, {
-      chainId: context.network.chainId,
-      id: event.args.id,
-    })
+    .update(market, { chainId: context.network.chainId, id: event.args.id })
     .set((row) => ({
       totalSupplyAssets: row.totalSupplyAssets + event.args.interest,
       totalSupplyShares: row.totalSupplyShares + event.args.feeShares,
