@@ -374,6 +374,19 @@ export const metaMorphoAbi = [
     type: "event",
   },
   {
+    inputs: [
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+        indexed: false,
+      },
+    ],
+    type: "event",
+    name: "SetName",
+    anonymous: false,
+  },
+  {
     anonymous: false,
     inputs: [{ indexed: true, internalType: "address", name: "newSkimRecipient", type: "address" }],
     name: "SetSkimRecipient",
@@ -387,6 +400,19 @@ export const metaMorphoAbi = [
     ],
     name: "SetSupplyQueue",
     type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "symbol",
+        type: "string",
+        indexed: false,
+      },
+    ],
+    type: "event",
+    name: "SetSymbol",
+    anonymous: false,
   },
   {
     anonymous: false,
@@ -464,6 +490,19 @@ export const metaMorphoAbi = [
     ],
     name: "UpdateLastTotalAssets",
     type: "event",
+  },
+  {
+    type: "event",
+    name: "UpdateLostAssets",
+    inputs: [
+      {
+        name: "newLostAssets",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
   },
   {
     anonymous: false,

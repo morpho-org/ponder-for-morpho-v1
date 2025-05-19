@@ -25,6 +25,25 @@ export default createConfig({
         },
       },
     },
+    MetaMorphoFactory: {
+      abi: metaMorphoFactoryAbi,
+      network: {
+        mainnet: {
+          address: [
+            "0x1897A8997241C1cD4bD0698647e4EB7213535c24",
+            "0xA9c3D3a366466Fa809d1Ae982Fb2c46E5fC41101",
+          ],
+          startBlock: 18925584,
+        },
+        base: {
+          address: [
+            "0xFf62A7c278C62eD665133147129245053Bbf5918",
+            "0xA9c3D3a366466Fa809d1Ae982Fb2c46E5fC41101",
+          ],
+          startBlock: 13978134,
+        },
+      },
+    },
     MetaMorpho: {
       abi: metaMorphoAbi,
       network: {

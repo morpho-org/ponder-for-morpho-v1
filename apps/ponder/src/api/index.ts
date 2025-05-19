@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { and, client, eq, graphql } from "ponder";
+import { and, client, eq, graphql, isNotNull, replaceBigInts } from "ponder";
 import { db, publicClients } from "ponder:api";
 import schema from "ponder:schema";
 import type { Address, Hex } from "viem";
@@ -14,18 +14,47 @@ app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
 app.use("/sql/*", client({ db, schema }));
 
-app.get("/chain/:id/vault/:address", async (c) => {
-  const { id: chainId, address } = c.req.param();
+app.get("/chain/:chainId/market/:marketId", async (c) => {
+  const { chainId, marketId } = c.req.param();
 
-  const vault = await db
-    .select()
-    .from(schema.vault)
-    .where(
-      and(eq(schema.vault.chainId, Number(chainId)), eq(schema.vault.address, address as Address)),
-    )
-    .limit(1);
+  // just market
+  const market = await db.query.market.findFirst({
+    where: and(eq(schema.market.chainId, Number(chainId)), eq(schema.market.id, marketId as Hex)),
+  });
 
-  return c.json(vault[0]?.withdrawQueue);
+  // market with positions
+  // const marketWithPositions = await db.query.market.findFirst({
+  //   where: and(eq(schema.market.chainId, Number(chainId)), eq(schema.market.id, marketId as Hex)),
+  //   with: { positions: true },
+  // });
+
+  // market with vaults that reference them
+  // const marketWithVaults = await db.query.market.findFirst({
+  //   where: and(eq(schema.market.chainId, Number(chainId)), eq(schema.market.id, marketId as Hex)),
+  //   with: { relatedWithdrawQueues: { with: { vault: { with: { withdrawQueue: true } } } } },
+  // });
+
+  return c.json(market);
+});
+
+app.get("/chain/:chainId/vault/:address", async (c) => {
+  const { chainId, address } = c.req.param();
+
+  const vault = await db.query.vault.findFirst({
+    where: and(
+      eq(schema.vault.chainId, Number(chainId)),
+      eq(schema.vault.address, address as Address),
+    ),
+    with: {
+      config: true,
+      withdrawQueue: {
+        where: isNotNull(schema.vaultWithdrawQueueItem.marketId),
+        with: { market: true },
+      },
+    },
+  });
+
+  return c.json(replaceBigInts(vault, (x) => String(x)));
 });
 
 app.post("/chain/:id/liquidatable-positions", async (c) => {
