@@ -144,13 +144,21 @@ ponder.on("MetaMorpho:SubmitTimelock", async ({ event, context }) => {
 //////////////////////////////////////////////////////////////*/
 
 ponder.on("MetaMorpho:RevokePendingCap", async ({ event, context }) => {
+  // Row may or may not exist yet, so we have to upsert
   await context.db
-    .update(vaultConfigItem, {
+    .insert(vaultConfigItem)
+    .values({
+      // primary key
       chainId: context.network.chainId,
       address: event.log.address,
       marketId: event.args.id,
+      // values
+      pendingCap: 0n,
+      pendingCapValidAt: 0n,
+      enabled: false,
+      removableAt: 0n,
     })
-    .set({ pendingCap: 0n, pendingCapValidAt: 0n });
+    .onConflictDoUpdate({ pendingCap: 0n, pendingCapValidAt: 0n });
 });
 
 ponder.on("MetaMorpho:RevokePendingGuardian", async ({ event, context }) => {
@@ -160,13 +168,21 @@ ponder.on("MetaMorpho:RevokePendingGuardian", async ({ event, context }) => {
 });
 
 ponder.on("MetaMorpho:RevokePendingMarketRemoval", async ({ event, context }) => {
+  // Row may or may not exist yet, so we have to upsert
   await context.db
-    .update(vaultConfigItem, {
+    .insert(vaultConfigItem)
+    .values({
+      // primary key
       chainId: context.network.chainId,
       address: event.log.address,
       marketId: event.args.id,
+      // values
+      pendingCap: 0n,
+      pendingCapValidAt: 0n,
+      enabled: false,
+      removableAt: 0n,
     })
-    .set({ removableAt: 0n });
+    .onConflictDoUpdate({ removableAt: 0n });
 });
 
 ponder.on("MetaMorpho:RevokePendingTimelock", async ({ event, context }) => {
