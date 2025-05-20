@@ -237,9 +237,15 @@ ponder.on("MetaMorpho:SetIsAllocator", async ({ event, context }) => {
 });
 
 ponder.on("MetaMorpho:SetName", async ({ event, context }) => {
-  await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
-    .set({ name: event.args.name });
+  // This may error because it's emitted in the vault's constructor
+  try {
+    await context.db
+      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .set({ name: event.args.name });
+  } catch (e) {
+    if (String(e).includes("No existing record found in table 'vault'")) return;
+    throw e instanceof Error ? e : new Error(String(e));
+  }
 });
 
 ponder.on("MetaMorpho:SetSkimRecipient", async ({ event, context }) => {
@@ -249,9 +255,15 @@ ponder.on("MetaMorpho:SetSkimRecipient", async ({ event, context }) => {
 });
 
 ponder.on("MetaMorpho:SetSymbol", async ({ event, context }) => {
-  await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
-    .set({ symbol: event.args.symbol });
+  // This may error because it's emitted in the vault's constructor
+  try {
+    await context.db
+      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .set({ symbol: event.args.symbol });
+  } catch (e) {
+    if (String(e).includes("No existing record found in table 'vault'")) return;
+    throw e instanceof Error ? e : new Error(String(e));
+  }
 });
 
 ponder.on("MetaMorpho:SetTimelock", async ({ event, context }) => {
