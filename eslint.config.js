@@ -27,6 +27,7 @@ export default tseslint.config({ ignores: ["dist"] }, eslint.configs.recommended
   },
   rules: {
     "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { ignoreRestSiblings: true }],
     "import-x/no-unresolved": [
       "error",
       { ignore: ["ponder:api", "ponder:registry", "ponder:schema"] },

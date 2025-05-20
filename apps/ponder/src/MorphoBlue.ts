@@ -1,5 +1,5 @@
 import { ponder } from "ponder:registry";
-import { market, position } from "ponder:schema";
+import { authorization, market, position } from "ponder:schema";
 
 ponder.on("Morpho:CreateMarket", async ({ event, context }) => {
   // `CreateMarket` can only fire once for a given `{ chainId, id }`,
@@ -192,4 +192,16 @@ ponder.on("Morpho:Liquidate", async ({ event, context }) => {
         borrowShares: row.borrowShares - event.args.repaidShares - event.args.badDebtShares,
       })),
   ]);
+});
+
+ponder.on("Morpho:SetAuthorization", async ({ event, context }) => {
+  await context.db
+    .insert(authorization)
+    .values({
+      chainId: context.network.chainId,
+      authorizer: event.args.authorizer,
+      authorizee: event.args.authorized,
+      isAuthorized: event.args.newIsAuthorized,
+    })
+    .onConflictDoUpdate({ isAuthorized: event.args.newIsAuthorized });
 });

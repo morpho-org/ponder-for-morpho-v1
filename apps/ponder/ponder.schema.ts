@@ -74,6 +74,27 @@ export const positionRelations = relations(position, ({ one }) => ({
 }));
 
 /*//////////////////////////////////////////////////////////////
+                          AUTHORIZATIONS
+//////////////////////////////////////////////////////////////*/
+
+export const authorization = onchainTable(
+  "authorization",
+  (t) => ({
+    chainId: t.integer().notNull(),
+    authorizer: t.hex().notNull(),
+    authorizee: t.hex().notNull(),
+    isAuthorized: t.boolean().notNull().default(false),
+  }),
+  (table) => ({
+    // Composite primary key uniquely identifies an authorization across chains
+    pk: primaryKey({ columns: [table.chainId, table.authorizer, table.authorizee] }),
+    // Indexes speed up relational queries
+    authorizerIdx: index().on(table.chainId, table.authorizer),
+    authorizeeIdx: index().on(table.chainId, table.authorizee),
+  }),
+);
+
+/*//////////////////////////////////////////////////////////////
                               VAULTS
 //////////////////////////////////////////////////////////////*/
 

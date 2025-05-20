@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { and, client, eq, graphql, isNotNull, replaceBigInts } from "ponder";
+import { and, client, eq, graphql, isNotNull, replaceBigInts, inArray } from "ponder";
 import { db, publicClients } from "ponder:api";
 import schema from "ponder:schema";
 import type { Address, Hex } from "viem";
@@ -13,6 +13,41 @@ const app = new Hono();
 app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
 app.use("/sql/*", client({ db, schema }));
+
+app.get("/chain/:chainId/preliquidations/authorizations/:authorizee", async (c) => {
+  const { chainId, authorizee } = c.req.param();
+  const { marketIds } = (await c.req.json()) as unknown as { marketIds: Hex[] };
+
+  if (!Array.isArray(marketIds)) {
+    return c.json({ error: "Request body must include a `marketIds` array." }, 400);
+  }
+
+  if (marketIds.length === 0) {
+    return c.json({ positions: [] });
+  }
+
+  const positions = await db
+    .select({ ...schema.position._.columns })
+    .from(schema.position)
+    .innerJoin(
+      schema.authorization,
+      and(
+        eq(schema.authorization.chainId, schema.position.chainId),
+        // only where position.user (the authorizer) has given rights to the authorizee
+        eq(schema.authorization.authorizer, schema.position.user),
+        eq(schema.authorization.authorizee, authorizee as Address),
+        eq(schema.authorization.isAuthorized, true),
+      ),
+    )
+    .where(
+      and(
+        eq(schema.position.chainId, Number(chainId)),
+        inArray(schema.position.marketId, marketIds),
+      ),
+    );
+
+  return c.json({ positions });
+});
 
 app.get("/chain/:chainId/market/:marketId", async (c) => {
   const { chainId, marketId } = c.req.param();
