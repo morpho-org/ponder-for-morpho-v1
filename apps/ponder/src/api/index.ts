@@ -69,6 +69,7 @@ app.get("/chain/:chainId/preliquidations", async (c) => {
 
           return {
             address: preLiquidation.address,
+            marketId: preLiquidation.marketId,
             params: {
               preLltv: `${preLiquidation.preLltv}%`,
               preLCF1: `${preLiquidation.preLCF1}%`,
@@ -91,7 +92,7 @@ app.get("/chain/:chainId/preliquidations", async (c) => {
     }),
   );
 
-  return c.json({ preLiquidationData });
+  return c.json({ preLiquidationData: preLiquidationData.flat() });
 });
 
 app.get("/chain/:chainId/market/:marketId", async (c) => {
