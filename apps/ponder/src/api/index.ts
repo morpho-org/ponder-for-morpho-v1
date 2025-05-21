@@ -14,8 +14,8 @@ app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
 app.use("/sql/*", client({ db, schema }));
 
-app.get("/chain/:chainId/preliquidations/authorizations/:authorizee", async (c) => {
-  const { chainId, authorizee } = c.req.param();
+app.get("/chain/:chainId/preliquidations", async (c) => {
+  const { chainId } = c.req.param();
   const { marketIds } = (await c.req.json()) as unknown as { marketIds: Hex[] };
 
   if (!Array.isArray(marketIds)) {
@@ -26,27 +26,73 @@ app.get("/chain/:chainId/preliquidations/authorizations/:authorizee", async (c) 
     return c.json({ positions: [] });
   }
 
-  const positions = await db
-    .select({ ...schema.position._.columns })
-    .from(schema.position)
-    .innerJoin(
-      schema.authorization,
-      and(
-        eq(schema.authorization.chainId, schema.position.chainId),
-        // only where position.user (the authorizer) has given rights to the authorizee
-        eq(schema.authorization.authorizer, schema.position.user),
-        eq(schema.authorization.authorizee, authorizee as Address),
-        eq(schema.authorization.isAuthorized, true),
-      ),
-    )
-    .where(
-      and(
-        eq(schema.position.chainId, Number(chainId)),
-        inArray(schema.position.marketId, marketIds),
-      ),
-    );
+  const preLiquidationData = await Promise.all(
+    marketIds.map(async (marketId) => {
+      const [preLiquidations, marketPositions] = await Promise.all([
+        db
+          .select()
+          .from(schema.preLiquidation)
+          .where(
+            and(
+              eq(schema.preLiquidation.chainId, Number(chainId)),
+              eq(schema.preLiquidation.marketId, marketId),
+            ),
+          ),
+        db
+          .select()
+          .from(schema.position)
+          .where(
+            and(
+              eq(schema.position.chainId, Number(chainId)),
+              eq(schema.position.marketId, marketId),
+            ),
+          ),
+      ]);
 
-  return c.json({ positions });
+      return await Promise.all(
+        preLiquidations.map(async (preLiquidation) => {
+          const enabledPositions = await Promise.all(
+            marketPositions.filter(async (position) => {
+              const authorization = await db
+                .select()
+                .from(schema.authorization)
+                .where(
+                  and(
+                    eq(schema.authorization.chainId, Number(chainId)),
+                    eq(schema.authorization.authorizer, position.user),
+                    eq(schema.authorization.authorizee, preLiquidation.address as Address),
+                  ),
+                );
+              return authorization[0]?.isAuthorized ?? false;
+            }),
+          );
+
+          return {
+            address: preLiquidation.address,
+            marketId: preLiquidation.marketId,
+            params: {
+              preLltv: `${preLiquidation.preLltv}%`,
+              preLCF1: `${preLiquidation.preLCF1}%`,
+              preLCF2: `${preLiquidation.preLCF2}%`,
+              preLIF1: `${preLiquidation.preLIF1}%`,
+              preLIF2: `${preLiquidation.preLIF2}%`,
+              preLiquidationOracle: `${preLiquidation.preLiquidationOracle}%`,
+            },
+            enabledPositions: enabledPositions.map((position) => position.user),
+            price: await publicClients[
+              chainId as unknown as keyof typeof publicClients
+            ].readContract({
+              address: preLiquidation.preLiquidationOracle,
+              abi: oracleAbi,
+              functionName: "price",
+            }),
+          };
+        }),
+      );
+    }),
+  );
+
+  return c.json({ preLiquidationData: preLiquidationData.flat() });
 });
 
 app.get("/chain/:chainId/market/:marketId", async (c) => {
