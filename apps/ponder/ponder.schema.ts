@@ -40,6 +40,7 @@ export const marketRelations = relations(market, ({ many }) => ({
   relatedVaultConfigs: many(vaultConfigItem),
   relatedVaultSupplyQueues: many(vaultSupplyQueueItem),
   relatedVaultWithdrawQueues: many(vaultWithdrawQueueItem),
+  relatedPreLiquidations: many(preLiquidation),
 }));
 
 /*//////////////////////////////////////////////////////////////
@@ -193,6 +194,39 @@ export const vaultSupplyQueueItemRelations = vaultQueueItemRelations(vaultSupply
 // `vault.withdrawQueue`
 export const vaultWithdrawQueueItem = vaultQueueItem("vault_withdraw_queue_item");
 export const vaultWithdrawQueueItemRelations = vaultQueueItemRelations(vaultWithdrawQueueItem);
+
+/*//////////////////////////////////////////////////////////////
+                       [PRE LIQUIDATION]
+//////////////////////////////////////////////////////////////*/
+
+export const preLiquidation = onchainTable(
+  "preLiquidation",
+  (t) => ({
+    chainId: t.integer().notNull(),
+    marketId: t.hex().notNull(),
+    address: t.hex().notNull(),
+
+    preLltv: t.bigint().notNull(),
+    preLCF1: t.bigint().notNull(),
+    preLCF2: t.bigint().notNull(),
+    preLIF1: t.bigint().notNull(),
+    preLIF2: t.bigint().notNull(),
+    preLiquidationOracle: t.hex().notNull(),
+  }),
+  (table) => ({
+    // Composite primary key uniquely identifies a preLiquidation across chains
+    pk: primaryKey({ columns: [table.chainId, table.marketId, table.address] }),
+    // Index speeds up relational queries
+    marketIdx: index().on(table.chainId, table.marketId),
+  }),
+);
+
+export const preLiquidationRelations = relations(preLiquidation, ({ one }) => ({
+  market: one(market, {
+    fields: [preLiquidation.chainId, preLiquidation.marketId],
+    references: [market.chainId, market.id],
+  }),
+}));
 
 /*//////////////////////////////////////////////////////////////
                            [HELPERS]

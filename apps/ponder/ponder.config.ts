@@ -5,6 +5,7 @@ import { adaptiveCurveIrmAbi } from "./abis/AdaptiveCurveIrm";
 import { metaMorphoAbi } from "./abis/MetaMorpho";
 import { metaMorphoFactoryAbi } from "./abis/MetaMorphoFactory";
 import { morphoBlueAbi } from "./abis/MorphoBlue";
+import { preLiquidationFactoryAbi } from "./abis/PreLiquidationFactory";
 
 export default createConfig({
   networks: {
@@ -81,6 +82,19 @@ export default createConfig({
         base: {
           address: "0x46415998764C29aB2a25CbeA6254146D50D22687",
           startBlock: 13977152,
+        },
+      },
+    },
+    PreLiquidationFactory: {
+      abi: preLiquidationFactoryAbi,
+      network: {
+        mainnet: {
+          address: "0x6FF33615e792E35ed1026ea7cACCf42D9BF83476",
+          startBlock: 21414664,
+        },
+        base: {
+          address: "0x8cd16b62E170Ee0bA83D80e1F80E6085367e2aef",
+          startBlock: 23779056,
         },
       },
     },
