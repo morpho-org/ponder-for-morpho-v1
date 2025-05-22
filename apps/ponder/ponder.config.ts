@@ -1,5 +1,5 @@
 import { createConfig, factory } from "ponder";
-import { getAbiItem, http } from "viem";
+import { getAbiItem } from "viem";
 
 import { adaptiveCurveIrmAbi } from "./abis/AdaptiveCurveIrm";
 import { metaMorphoAbi } from "./abis/MetaMorpho";
@@ -8,14 +8,15 @@ import { morphoBlueAbi } from "./abis/MorphoBlue";
 import { preLiquidationFactoryAbi } from "./abis/PreLiquidationFactory";
 
 export default createConfig({
-  networks: {
-    mainnet: { chainId: 1, transport: http(process.env.PONDER_RPC_URL_1) },
-    base: { chainId: 8453, transport: http(process.env.PONDER_RPC_URL_8453) },
+  ordering: "multichain",
+  chains: {
+    mainnet: { id: 1, rpc: process.env.PONDER_RPC_URL_1 },
+    base: { id: 8453, rpc: process.env.PONDER_RPC_URL_8453 },
   },
   contracts: {
     Morpho: {
       abi: morphoBlueAbi,
-      network: {
+      chain: {
         mainnet: {
           address: "0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb",
           startBlock: 18883124,
@@ -28,7 +29,7 @@ export default createConfig({
     },
     MetaMorphoFactory: {
       abi: metaMorphoFactoryAbi,
-      network: {
+      chain: {
         mainnet: {
           address: [
             "0x1897A8997241C1cD4bD0698647e4EB7213535c24",
@@ -47,7 +48,7 @@ export default createConfig({
     },
     MetaMorpho: {
       abi: metaMorphoAbi,
-      network: {
+      chain: {
         mainnet: {
           address: factory({
             address: [
@@ -74,7 +75,7 @@ export default createConfig({
     },
     AdaptiveCurveIRM: {
       abi: adaptiveCurveIrmAbi,
-      network: {
+      chain: {
         mainnet: {
           address: "0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC",
           startBlock: 18883124,
@@ -87,7 +88,7 @@ export default createConfig({
     },
     PreLiquidationFactory: {
       abi: preLiquidationFactoryAbi,
-      network: {
+      chain: {
         mainnet: {
           address: "0x6FF33615e792E35ed1026ea7cACCf42D9BF83476",
           startBlock: 21414664,

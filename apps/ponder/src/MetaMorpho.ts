@@ -31,7 +31,7 @@ ponder.on("MetaMorphoFactory:CreateMetaMorpho", async ({ event, context }) => {
 
   await context.db.insert(vault).values({
     // primary key
-    chainId: context.network.chainId,
+    chainId: context.chain.id,
     address: event.args.metaMorpho,
     // immutables
     asset: event.args.asset,
@@ -50,7 +50,7 @@ ponder.on("MetaMorphoFactory:CreateMetaMorpho", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:OwnershipTransferStarted", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ pendingOwner: event.args.newOwner });
 });
 
@@ -58,7 +58,7 @@ ponder.on("MetaMorpho:OwnershipTransferred", async ({ event, context }) => {
   // This may error because it's emitted in the vault's constructor
   try {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set({ owner: event.args.newOwner, pendingOwner: zeroAddress });
   } catch (e) {
     if (String(e).includes("No existing record found in table 'vault'")) return;
@@ -72,7 +72,7 @@ ponder.on("MetaMorpho:OwnershipTransferred", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:SubmitCap", async ({ event, context }) => {
   const { timelock } = (await context.db.find(vault, {
-    chainId: context.network.chainId,
+    chainId: context.chain.id,
     address: event.log.address,
   })) ?? { timelock: 0n };
 
@@ -81,7 +81,7 @@ ponder.on("MetaMorpho:SubmitCap", async ({ event, context }) => {
     .insert(vaultConfigItem)
     .values({
       // primary key
-      chainId: context.network.chainId,
+      chainId: context.chain.id,
       address: event.log.address,
       marketId: event.args.id,
       // values
@@ -98,27 +98,25 @@ ponder.on("MetaMorpho:SubmitCap", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:SubmitGuardian", async ({ event, context }) => {
   const { timelock } = (await context.db.find(vault, {
-    chainId: context.network.chainId,
+    chainId: context.chain.id,
     address: event.log.address,
   })) ?? { timelock: 0n };
 
-  await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
-    .set({
-      pendingGuardian: event.args.newGuardian,
-      pendingGuardianValidAt: event.block.timestamp + timelock,
-    });
+  await context.db.update(vault, { chainId: context.chain.id, address: event.log.address }).set({
+    pendingGuardian: event.args.newGuardian,
+    pendingGuardianValidAt: event.block.timestamp + timelock,
+  });
 });
 
 ponder.on("MetaMorpho:SubmitMarketRemoval", async ({ event, context }) => {
   const { timelock } = (await context.db.find(vault, {
-    chainId: context.network.chainId,
+    chainId: context.chain.id,
     address: event.log.address,
   })) ?? { timelock: 0n };
 
   await context.db
     .update(vaultConfigItem, {
-      chainId: context.network.chainId,
+      chainId: context.chain.id,
       address: event.log.address,
       marketId: event.args.id,
     })
@@ -127,16 +125,14 @@ ponder.on("MetaMorpho:SubmitMarketRemoval", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:SubmitTimelock", async ({ event, context }) => {
   const { timelock } = (await context.db.find(vault, {
-    chainId: context.network.chainId,
+    chainId: context.chain.id,
     address: event.log.address,
   })) ?? { timelock: 0n };
 
-  await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
-    .set({
-      pendingTimelock: event.args.newTimelock,
-      pendingTimelockValidAt: event.block.timestamp + timelock,
-    });
+  await context.db.update(vault, { chainId: context.chain.id, address: event.log.address }).set({
+    pendingTimelock: event.args.newTimelock,
+    pendingTimelockValidAt: event.block.timestamp + timelock,
+  });
 });
 
 /*//////////////////////////////////////////////////////////////
@@ -149,7 +145,7 @@ ponder.on("MetaMorpho:RevokePendingCap", async ({ event, context }) => {
     .insert(vaultConfigItem)
     .values({
       // primary key
-      chainId: context.network.chainId,
+      chainId: context.chain.id,
       address: event.log.address,
       marketId: event.args.id,
       // values
@@ -163,7 +159,7 @@ ponder.on("MetaMorpho:RevokePendingCap", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:RevokePendingGuardian", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ pendingGuardian: zeroAddress, pendingGuardianValidAt: 0n });
 });
 
@@ -173,7 +169,7 @@ ponder.on("MetaMorpho:RevokePendingMarketRemoval", async ({ event, context }) =>
     .insert(vaultConfigItem)
     .values({
       // primary key
-      chainId: context.network.chainId,
+      chainId: context.chain.id,
       address: event.log.address,
       marketId: event.args.id,
       // values
@@ -187,7 +183,7 @@ ponder.on("MetaMorpho:RevokePendingMarketRemoval", async ({ event, context }) =>
 
 ponder.on("MetaMorpho:RevokePendingTimelock", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ pendingTimelock: 0n, pendingTimelockValidAt: 0n });
 });
 
@@ -198,7 +194,7 @@ ponder.on("MetaMorpho:RevokePendingTimelock", async ({ event, context }) => {
 ponder.on("MetaMorpho:SetCap", async ({ event, context }) => {
   await context.db
     .update(vaultConfigItem, {
-      chainId: context.network.chainId,
+      chainId: context.chain.id,
       address: event.log.address,
       marketId: event.args.id,
     })
@@ -212,35 +208,33 @@ ponder.on("MetaMorpho:SetCap", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:SetCurator", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ curator: event.args.newCurator });
 });
 
 ponder.on("MetaMorpho:SetFee", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ fee: event.args.newFee });
 });
 
 ponder.on("MetaMorpho:SetFeeRecipient", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ feeRecipient: event.args.newFeeRecipient });
 });
 
 ponder.on("MetaMorpho:SetGuardian", async ({ event, context }) => {
-  await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
-    .set({
-      guardian: event.args.guardian,
-      pendingGuardian: zeroAddress,
-      pendingGuardianValidAt: 0n,
-    });
+  await context.db.update(vault, { chainId: context.chain.id, address: event.log.address }).set({
+    guardian: event.args.guardian,
+    pendingGuardian: zeroAddress,
+    pendingGuardianValidAt: 0n,
+  });
 });
 
 ponder.on("MetaMorpho:SetIsAllocator", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set((row) => {
       const set = new Set(row.allocators);
       if (event.args.isAllocator) {
@@ -256,7 +250,7 @@ ponder.on("MetaMorpho:SetName", async ({ event, context }) => {
   // This may error because it's emitted in the vault's constructor
   try {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set({ name: event.args.name });
   } catch (e) {
     if (String(e).includes("No existing record found in table 'vault'")) return;
@@ -266,7 +260,7 @@ ponder.on("MetaMorpho:SetName", async ({ event, context }) => {
 
 ponder.on("MetaMorpho:SetSkimRecipient", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ skimRecipient: event.args.newSkimRecipient });
 });
 
@@ -274,7 +268,7 @@ ponder.on("MetaMorpho:SetSymbol", async ({ event, context }) => {
   // This may error because it's emitted in the vault's constructor
   try {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set({ symbol: event.args.symbol });
   } catch (e) {
     if (String(e).includes("No existing record found in table 'vault'")) return;
@@ -286,7 +280,7 @@ ponder.on("MetaMorpho:SetTimelock", async ({ event, context }) => {
   // This may error because it's emitted in the vault's constructor
   try {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set({ timelock: event.args.newTimelock, pendingTimelock: 0n, pendingTimelockValidAt: 0n });
   } catch (e) {
     if (String(e).includes("No existing record found in table 'vault'")) return;
@@ -297,14 +291,14 @@ ponder.on("MetaMorpho:SetTimelock", async ({ event, context }) => {
 ponder.on("MetaMorpho:SetSupplyQueue", async ({ event, context }) => {
   let length = 0;
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set((row) => {
       length = row.supplyQueueLength;
       return { supplyQueueLength: event.args.newSupplyQueue.length };
     });
 
   const values = getQueueItems(
-    context.network.chainId,
+    context.chain.id,
     event.log.address,
     length,
     event.args.newSupplyQueue,
@@ -319,14 +313,14 @@ ponder.on("MetaMorpho:SetSupplyQueue", async ({ event, context }) => {
 ponder.on("MetaMorpho:SetWithdrawQueue", async ({ event, context }) => {
   let length = 0;
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set((row) => {
       length = row.withdrawQueueLength;
       return { withdrawQueueLength: event.args.newWithdrawQueue.length };
     });
 
   const values = getQueueItems(
-    context.network.chainId,
+    context.chain.id,
     event.log.address,
     length,
     event.args.newWithdrawQueue,
@@ -345,24 +339,24 @@ ponder.on("MetaMorpho:SetWithdrawQueue", async ({ event, context }) => {
 ponder.on("MetaMorpho:Transfer", async ({ event, context }) => {
   if (event.args.from === zeroAddress) {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set((row) => ({ totalSupply: row.totalSupply + event.args.value }));
   } else if (event.args.to === zeroAddress) {
     await context.db
-      .update(vault, { chainId: context.network.chainId, address: event.log.address })
+      .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set((row) => ({ totalSupply: row.totalSupply - event.args.value }));
   }
 });
 
 ponder.on("MetaMorpho:UpdateLastTotalAssets", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ lastTotalAssets: event.args.updatedTotalAssets });
 });
 
 ponder.on("MetaMorpho:UpdateLostAssets", async ({ event, context }) => {
   await context.db
-    .update(vault, { chainId: context.network.chainId, address: event.log.address })
+    .update(vault, { chainId: context.chain.id, address: event.log.address })
     .set({ lostAssets: event.args.newLostAssets });
 });
 

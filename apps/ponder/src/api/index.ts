@@ -14,6 +14,83 @@ app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
 app.use("/sql/*", client({ db, schema }));
 
+app.get("/chain/:chainId/preliquidations2", async (c) => {
+  const { chainId } = c.req.param();
+  const { marketIds } = (await c.req.json()) as unknown as { marketIds: Hex[] };
+
+  if (!Array.isArray(marketIds)) {
+    return c.json({ error: "Request body must include a `marketIds` array." }, 400);
+  }
+
+  if (marketIds.length === 0) {
+    return c.json({ positions: [] });
+  }
+
+  const rows = await db
+    .select({ pos: schema.position, mkt: schema.market, plc: schema.preLiquidationContract })
+    .from(schema.position)
+    .innerJoin(
+      schema.market,
+      and(
+        eq(schema.market.chainId, schema.position.chainId),
+        eq(schema.market.id, schema.position.marketId),
+      ),
+    )
+    .leftJoin(
+      schema.authorization,
+      and(
+        eq(schema.authorization.chainId, schema.position.chainId),
+        eq(schema.authorization.authorizer, schema.position.user),
+        eq(schema.authorization.isAuthorized, true),
+      ),
+    )
+    .leftJoin(
+      schema.preLiquidationContract,
+      and(
+        eq(schema.preLiquidationContract.chainId, schema.authorization.chainId),
+        eq(schema.preLiquidationContract.address, schema.authorization.authorizee),
+        eq(schema.preLiquidationContract.marketId, schema.position.marketId),
+      ),
+    )
+    .where(
+      and(
+        eq(schema.position.chainId, parseInt(chainId, 10)),
+        inArray(schema.position.marketId, marketIds),
+      ),
+    );
+
+  // Get all preliquidation contracts on this chain, and for each one, get all associated positions,
+  // i.e. position's for which { authorizer = user, authorizee = contract, isAuthorized = true }
+  // const rows = await db
+  //   .select({
+  //     preLiquidationContract: schema.preLiquidationContract,
+  //     position: schema.position,
+  //   })
+  //   .from(schema.preLiquidationContract)
+  //   .leftJoin(
+  //     schema.authorization,
+  //     and(
+  //       eq(schema.authorization.chainId, schema.preLiquidationContract.chainId),
+  //       eq(schema.authorization.authorizee, schema.preLiquidationContract.address),
+  //       eq(schema.authorization.isAuthorized, true),
+  //     ),
+  //   )
+  //   .innerJoin(
+  //     schema.position,
+  //     and(
+  //       eq(schema.position.chainId, schema.preLiquidationContract.chainId),
+  //       eq(schema.position.marketId, schema.preLiquidationContract.marketId),
+  //       eq(schema.position.user, schema.authorization.authorizer),
+  //     ),
+  //   )
+  //   .where(
+  //     and(
+  //       eq(schema.preLiquidationContract.chainId, parseInt(chainId, 10)),
+  //       inArray(schema.preLiquidationContract.marketId, marketIds),
+  //     ),
+  //   );
+});
+
 app.get("/chain/:chainId/preliquidations", async (c) => {
   const { chainId } = c.req.param();
   const { marketIds } = (await c.req.json()) as unknown as { marketIds: Hex[] };
@@ -31,11 +108,11 @@ app.get("/chain/:chainId/preliquidations", async (c) => {
       const [preLiquidations, marketPositions] = await Promise.all([
         db
           .select()
-          .from(schema.preLiquidation)
+          .from(schema.preLiquidationContract)
           .where(
             and(
-              eq(schema.preLiquidation.chainId, Number(chainId)),
-              eq(schema.preLiquidation.marketId, marketId),
+              eq(schema.preLiquidationContract.chainId, Number(chainId)),
+              eq(schema.preLiquidationContract.marketId, marketId),
             ),
           ),
         db
