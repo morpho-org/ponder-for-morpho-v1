@@ -1,6 +1,16 @@
 import { ponder } from "ponder:registry";
 import { authorization, market, position } from "ponder:schema";
 
+/**
+ * @dev The following events are ignored:
+ * - `EnableIrm(address)` because a new IRM would be incompatible with much of our tooling
+ * - `EnableLltv(uint256)` because it's not relevant to any tracked state
+ * - `FlashLoan(address,address,uint256)` because it's not relevant to any tracked state
+ * - `IncrementNonce(address,address,uint256)` because it's not relevant to any tracked state
+ * - `SetFeeRecipient(address)` because it's not relevant to any tracked state
+ * - `SetOwner(address)` because it's not relevant to any tracked state
+ */
+
 ponder.on("Morpho:CreateMarket", async ({ event, context }) => {
   // `CreateMarket` can only fire once for a given `{ chainId, id }`,
   // so we can insert without any `onConflict` handling.
