@@ -40,7 +40,7 @@ app.post("/chain/:chainId/market/:marketId", async (c) => {
 /**
  * Fetch a given vault, including markets in its withdraw queue.
  */
-app.get("/chain/:chainId/vault/:address", async (c) => {
+app.post("/chain/:chainId/vault/:address", async (c) => {
   const { chainId, address } = c.req.param();
 
   const vault = await db.query.vault.findFirst({
@@ -63,7 +63,7 @@ app.get("/chain/:chainId/vault/:address", async (c) => {
 /**
  * Fetch all liquidatable (and pre-liquidatable) positions for a given set of markets.
  */
-app.get("/chain/:chainId/liquidatable-positions", async (c) => {
+app.post("/chain/:chainId/liquidatable-positions", async (c) => {
   const { chainId: chainIdRaw } = c.req.param();
   const { marketIds: marketIdsRaw } = (await c.req.json()) as unknown as { marketIds: Hex[] };
 
