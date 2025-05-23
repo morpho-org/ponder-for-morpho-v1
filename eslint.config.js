@@ -4,6 +4,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import eslintPluginImportX from "eslint-plugin-import-x";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import { createNextImportResolver } from "eslint-import-resolver-next";
 
 export default tseslint.config({ ignores: ["dist"] }, eslint.configs.recommended, {
   extends: [
@@ -48,5 +49,8 @@ export default tseslint.config({ ignores: ["dist"] }, eslint.configs.recommended
         ],
       },
     ],
+  },
+  settings: {
+    "import-x/resolver-next": [createNextImportResolver({ packages: { pnpmWorkspace: true } })],
   },
 });

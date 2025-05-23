@@ -1,4 +1,4 @@
-import { eq, index, onchainTable, primaryKey, relations } from "ponder";
+import { index, onchainTable, primaryKey, relations, sql } from "ponder";
 import { zeroAddress } from "viem";
 
 /*//////////////////////////////////////////////////////////////
@@ -90,8 +90,12 @@ export const authorization = onchainTable(
     // Composite primary key uniquely identifies an authorization across chains
     pk: primaryKey({ columns: [table.chainId, table.authorizer, table.authorizee] }),
     // Indexes speed up relational queries
-    authorizerIdx: index().on(table.chainId, table.authorizer).where(eq(table.isAuthorized, true)),
-    authorizeeIdx: index().on(table.chainId, table.authorizee).where(eq(table.isAuthorized, true)),
+    authorizerIdx: index()
+      .on(table.chainId, table.authorizer)
+      .where(sql`${table.isAuthorized} = true`),
+    authorizeeIdx: index()
+      .on(table.chainId, table.authorizee)
+      .where(sql`${table.isAuthorized} = true`),
   }),
 );
 
