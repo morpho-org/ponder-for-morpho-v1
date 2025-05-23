@@ -12,6 +12,7 @@ export default createConfig({
   chains: {
     mainnet: { id: 1, rpc: process.env.PONDER_RPC_URL_1 },
     base: { id: 8453, rpc: process.env.PONDER_RPC_URL_8453 },
+    polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
   },
   contracts: {
     Morpho: {
@@ -24,6 +25,10 @@ export default createConfig({
         base: {
           address: "0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb",
           startBlock: 13977148,
+        },
+        polygon: {
+          address: "0x1bF0c2541F820E775182832f06c0B7Fc27A25f67",
+          startBlock: 66931042,
         },
       },
     },
@@ -43,6 +48,10 @@ export default createConfig({
             "0xA9c3D3a366466Fa809d1Ae982Fb2c46E5fC41101",
           ],
           startBlock: 13978134,
+        },
+        polygon: {
+          address: "0xa9c87daB340631C34BB738625C70499e29ddDC98",
+          startBlock: 66931118,
         },
       },
     },
@@ -71,6 +80,14 @@ export default createConfig({
           }),
           startBlock: 13978134,
         },
+        polygon: {
+          address: factory({
+            address: "0xa9c87daB340631C34BB738625C70499e29ddDC98",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 66931118,
+        },
       },
     },
     AdaptiveCurveIRM: {
@@ -84,6 +101,10 @@ export default createConfig({
           address: "0x46415998764C29aB2a25CbeA6254146D50D22687",
           startBlock: 13977152,
         },
+        polygon: {
+          address: "0xe675A2161D4a6E2de2eeD70ac98EEBf257FBF0B0",
+          startBlock: 66931042,
+        },
       },
     },
     PreLiquidationFactory: {
@@ -96,6 +117,10 @@ export default createConfig({
         base: {
           address: "0x8cd16b62E170Ee0bA83D80e1F80E6085367e2aef",
           startBlock: 23779056,
+        },
+        polygon: {
+          address: "0xeDadDe37D76c72b98725614d0b41C20Fe612d304",
+          startBlock: 68074185,
         },
       },
     },
