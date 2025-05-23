@@ -5,6 +5,7 @@ import schema from "ponder:schema";
 import { type Address, type Hex } from "viem";
 
 import { getLiquidatablePositions } from "./liquidatable-positions";
+import { getPreliquidations } from "./preliquidations";
 
 function replaceBigInts<T>(value: T) {
   return replaceBigIntsBase(value, (x) => `${String(x)}n`);
@@ -91,6 +92,34 @@ app.post("/chain/:chainId/liquidatable-positions", async (c) => {
   return c.json(
     JSON.parse(JSON.stringify(response, (x) => (typeof x === "bigint" ? `${String(x)}n` : x))),
   );
+});
+
+app.post("/chain/:chainId/preliquidations", async (c) => {
+  const { chainId: chainIdRaw } = c.req.param();
+  const { marketIds: marketIdsRaw } = (await c.req.json()) as unknown as { marketIds: Hex[] };
+
+  if (!Array.isArray(marketIdsRaw)) {
+    return c.json({ error: "Request body must include a `marketIds` array." }, 400);
+  }
+
+  const chainId = parseInt(chainIdRaw, 10);
+  const marketIds = [...new Set(marketIdsRaw)];
+
+  const publicClient = Object.values(publicClients).find(
+    (publicClient) => publicClient.chain?.id === chainId,
+  );
+
+  if (!publicClient) {
+    return c.json(
+      {
+        error: `${chainIdRaw} is not one of the supported chains: [${Object.keys(publicClients).join(", ")}]`,
+      },
+      400,
+    );
+  }
+
+  const response = await getPreliquidations({ db, chainId, publicClient, marketIds });
+  return c.json(replaceBigInts(response));
 });
 
 export default app;
