@@ -5,6 +5,7 @@ import schema from "ponder:schema";
 import { type Address, type Hex } from "viem";
 
 import { getLiquidatablePositions } from "./liquidatable-positions";
+import { oracleAbi } from "~/abis/Oracle";
 
 function replaceBigInts<T>(value: T) {
   return replaceBigIntsBase(value, (x) => `${String(x)}n`);
@@ -91,6 +92,87 @@ app.post("/chain/:chainId/liquidatable-positions", async (c) => {
   return c.json(
     JSON.parse(JSON.stringify(response, (x) => (typeof x === "bigint" ? `${String(x)}n` : x))),
   );
+});
+
+app.get("/chain/:chainId/preliquidations", async (c) => {
+  const { chainId } = c.req.param();
+  const { marketIds } = (await c.req.json()) as unknown as { marketIds: Hex[] };
+
+  if (!Array.isArray(marketIds)) {
+    return c.json({ error: "Request body must include a `marketIds` array." }, 400);
+  }
+
+  if (marketIds.length === 0) {
+    return c.json({ positions: [] });
+  }
+
+  const preLiquidationData = await Promise.all(
+    marketIds.map(async (marketId) => {
+      const [preLiquidations, marketPositions] = await Promise.all([
+        db
+          .select()
+          .from(schema.preLiquidationContract)
+          .where(
+            and(
+              eq(schema.preLiquidationContract.chainId, Number(chainId)),
+              eq(schema.preLiquidationContract.marketId, marketId),
+            ),
+          ),
+        db
+          .select()
+          .from(schema.position)
+          .where(
+            and(
+              eq(schema.position.chainId, Number(chainId)),
+              eq(schema.position.marketId, marketId),
+            ),
+          ),
+      ]);
+
+      return await Promise.all(
+        preLiquidations.map(async (preLiquidation) => {
+          const enabledPositions = await Promise.all(
+            marketPositions.filter(async (position) => {
+              const authorization = await db
+                .select()
+                .from(schema.authorization)
+                .where(
+                  and(
+                    eq(schema.authorization.chainId, Number(chainId)),
+                    eq(schema.authorization.authorizer, position.user),
+                    eq(schema.authorization.authorizee, preLiquidation.address as Address),
+                  ),
+                );
+              return authorization[0]?.isAuthorized ?? false;
+            }),
+          );
+
+          return {
+            address: preLiquidation.address,
+            marketId: preLiquidation.marketId,
+            params: {
+              preLltv: `${preLiquidation.preLltv}%`,
+              preLCF1: `${preLiquidation.preLcf1}%`,
+              preLCF2: `${preLiquidation.preLcf2}%`,
+              preLIF1: `${preLiquidation.preLif1}%`,
+              preLIF2: `${preLiquidation.preLif2}%`,
+              preLiquidationOracle: `${preLiquidation.preLiquidationOracle}%`,
+            },
+            enabledPositions: enabledPositions.map((position) => position.user),
+            price: await publicClients[
+              chainId as unknown as keyof typeof publicClients
+            ].readContract({
+              address: preLiquidation.preLiquidationOracle,
+              abi: oracleAbi,
+              functionName: "price",
+            }),
+          };
+        }),
+      );
+    }),
+  );
+
+  return c.json({ preLiquidationData: preLiquidationData.flat() });
 });
 
 export default app;
