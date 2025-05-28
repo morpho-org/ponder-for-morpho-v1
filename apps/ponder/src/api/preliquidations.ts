@@ -1,3 +1,4 @@
+import { type IPreLiquidationParams } from "@morpho-org/blue-sdk";
 import { and, eq, gt, inArray, ReadonlyDrizzle } from "ponder";
 import { type Address, zeroAddress, type Hex, type PublicClient } from "viem";
 
@@ -83,14 +84,7 @@ export async function getPreliquidations({
   const results: {
     address: Address;
     marketId: Hex;
-    preLiquidationParams: {
-      preLltv: bigint;
-      preLCF1: bigint;
-      preLCF2: bigint;
-      preLIF1: bigint;
-      preLIF2: bigint;
-      preLiquidationOracle: Address;
-    };
+    preLiquidationParams: IPreLiquidationParams;
     enabledPositions: Address[];
     price: bigint | null;
   }[] = [];
@@ -115,14 +109,7 @@ export async function getPreliquidations({
     results.push({
       address: contract.address,
       marketId: contract.marketId,
-      preLiquidationParams: {
-        preLltv: contract.preLltv,
-        preLCF1: contract.preLcf1,
-        preLCF2: contract.preLcf2,
-        preLIF1: contract.preLif1,
-        preLIF2: contract.preLif2,
-        preLiquidationOracle: contract.preLiquidationOracle,
-      },
+      preLiquidationParams: (({ chainId, marketId, address, ...rest }) => rest)(contract),
       enabledPositions,
       price: price.result,
     });

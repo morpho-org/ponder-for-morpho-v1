@@ -11,10 +11,10 @@ ponder.on("PreLiquidationFactory:CreatePreLiquidation", async ({ event, context 
 
     // `PreLiquidationParams` struct
     preLltv: event.args.preLiquidationParams.preLltv,
-    preLcf1: event.args.preLiquidationParams.preLCF1,
-    preLcf2: event.args.preLiquidationParams.preLCF2,
-    preLif1: event.args.preLiquidationParams.preLIF1,
-    preLif2: event.args.preLiquidationParams.preLIF2,
+    preLCF1: event.args.preLiquidationParams.preLCF1,
+    preLCF2: event.args.preLiquidationParams.preLCF2,
+    preLIF1: event.args.preLiquidationParams.preLIF1,
+    preLIF2: event.args.preLiquidationParams.preLIF2,
     preLiquidationOracle: event.args.preLiquidationParams.preLiquidationOracle,
   });
 });

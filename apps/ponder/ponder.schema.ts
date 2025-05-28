@@ -112,10 +112,10 @@ export const preLiquidationContract = onchainTable(
 
     // PreLiquidationParams fields
     preLltv: t.bigint().notNull(),
-    preLcf1: t.bigint().notNull(),
-    preLcf2: t.bigint().notNull(),
-    preLif1: t.bigint().notNull(),
-    preLif2: t.bigint().notNull(),
+    preLCF1: t.bigint().notNull(), // capitalized to match @morpho-org/blue-sdk
+    preLCF2: t.bigint().notNull(), // capitalized to match @morpho-org/blue-sdk
+    preLIF1: t.bigint().notNull(), // capitalized to match @morpho-org/blue-sdk
+    preLIF2: t.bigint().notNull(), // capitalized to match @morpho-org/blue-sdk
     preLiquidationOracle: t.hex().notNull(),
   }),
   (table) => ({

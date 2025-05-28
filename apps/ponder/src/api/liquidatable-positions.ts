@@ -1,8 +1,10 @@
 import {
   AccrualPosition,
+  type IAccrualPosition,
+  type IMarket,
+  type IPreLiquidationPosition,
   Market,
   MarketParams,
-  PreLiquidationParams,
   PreLiquidationPosition,
 } from "@morpho-org/blue-sdk";
 import { and, eq, inArray, gt, ReadonlyDrizzle } from "ponder";
@@ -11,6 +13,13 @@ import { type Address, zeroAddress, type Hex, PublicClient } from "viem";
 import { oracleAbi } from "~/abis/Oracle";
 // NOTE: Use relative path rather than "ponder:schema" so that tests can import from this file
 import * as schema from "~/ponder.schema";
+
+type ILiquidatablePosition = (
+  | (IAccrualPosition & { type: "IAccrualPosition" })
+  | (IPreLiquidationPosition & { type: "IPreLiquidationPosition" })
+) & {
+  seizableCollateral: bigint;
+};
 
 export async function getLiquidatablePositions({
   db,
@@ -96,16 +105,18 @@ export async function getLiquidatablePositions({
   const now = (Date.now() / 1000).toFixed(0);
 
   const warnings: string[] = [];
-  const results: { market: Market; positions: (AccrualPosition | PreLiquidationPosition)[] }[] = [];
+  const results: { market: IMarket; positions: ILiquidatablePosition[] }[] = [];
 
-  marketRows.forEach(({ positions: dbPositions, ...dbMarket }) => {
+  for (const { positions: dbPositions, ...dbMarket } of marketRows) {
     const price = prices[dbMarket.oracle];
-    if (price === undefined) {
+    if (dbMarket.oracle === zeroAddress) {
+      continue;
+    } else if (price === undefined) {
       warnings.push(`${dbMarket.oracle} was skipped when fetching prices -- SHOULD NEVER HAPPEN.`);
-      return;
+      continue;
     } else if (price.status === "failure") {
       warnings.push(`${dbMarket.oracle} failed to return a price ${price.error}`);
-      return;
+      continue;
     }
 
     const market = new Market({
@@ -113,35 +124,42 @@ export async function getLiquidatablePositions({
       params: new MarketParams(dbMarket),
       price: price.result,
     }).accrueInterest(now);
-    const positionsLiq = dbPositions.map((dbPosition) => new AccrualPosition(dbPosition, market));
-    const positionsPreLiq = (preLiquidationCandidates.get(market.id) ?? []).map(
-      (c) =>
-        new PreLiquidationPosition(
-          {
-            ...c.position,
-            preLiquidation: c.preLiquidationContract.address,
-            preLiquidationParams: new PreLiquidationParams(
-              (({ preLcf1, preLcf2, preLif1, preLif2, ...rest }) => ({
-                ...rest,
-                // TODO: Update capitalization in SDK so that we don't have to rename these
-                preLCF1: preLcf1,
-                preLCF2: preLcf2,
-                preLIF1: preLif1,
-                preLIF2: preLif2,
-              }))(c.preLiquidationContract),
-            ),
-          },
-          market,
+    // Restructure data for use with @morpho-org/blue-sdk (`AccrualPosition`s)
+    const positionsLiq: ILiquidatablePosition[] = dbPositions.map((dbPosition) => {
+      const iposition = dbPosition;
+      return {
+        // NOTE: We spread `iposition` rather than the `AccrualPosition` to minimize bandwidth
+        // (the latter has additional, extra fields).
+        ...iposition,
+        type: "IAccrualPosition",
+        seizableCollateral: new AccrualPosition(dbPosition, market).seizableCollateral ?? 0n,
+      };
+    });
+    // Restructure data for use with @morpho-org/blue-sdk (`PreLiquidationPosition`s)
+    const positionsPreLiq: ILiquidatablePosition[] = (
+      preLiquidationCandidates.get(market.id) ?? []
+    ).map((c) => {
+      const iposition = {
+        ...c.position,
+        preLiquidation: c.preLiquidationContract.address,
+        preLiquidationParams: (({ chainId, address, marketId, ...rest }) => rest)(
+          c.preLiquidationContract,
         ),
-    );
+      };
+      return {
+        // NOTE: We spread `iposition` rather than the `PreLiquidationPosition` to minimize bandwidth
+        // (the latter has additional, extra fields).
+        ...iposition,
+        type: "IPreLiquidationPosition",
+        seizableCollateral: new PreLiquidationPosition(iposition, market).seizableCollateral ?? 0n,
+      };
+    });
 
-    const positions: (AccrualPosition | PreLiquidationPosition)[] = [
-      ...positionsLiq,
-      ...positionsPreLiq,
-    ];
-    positions.sort((a, b) =>
-      (a.seizableCollateral ?? 0n) > (b.seizableCollateral ?? 0n) ? -1 : 1,
+    // Combine
+    const positions: ILiquidatablePosition[] = [...positionsLiq, ...positionsPreLiq].filter(
+      (a) => a.seizableCollateral > 0n,
     );
+    positions.sort((a, b) => (a.seizableCollateral > b.seizableCollateral ? -1 : 1));
 
     // Only keep the first occurrence of each user. They may have approved multiple PreLiquidation
     // contracts, but we only care about the one with the largest `seizableCollateral`.
@@ -155,8 +173,8 @@ export async function getLiquidatablePositions({
       }
     }
 
-    return { market, positions };
-  });
+    results.push({ market, positions: bestPositions });
+  }
 
   return { warnings, results };
 }
