@@ -86,7 +86,7 @@ export async function getPreliquidations({
     marketId: Hex;
     preLiquidationParams: IPreLiquidationParams;
     enabledPositions: Address[];
-    price: bigint | null;
+    price: bigint;
   }[] = [];
 
   [...preLiquidationCandidates.values()].forEach((rows) => {

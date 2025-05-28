@@ -107,22 +107,28 @@ export async function getLiquidatablePositions({
   const warnings: string[] = [];
   const results: { market: IMarket; positions: ILiquidatablePosition[] }[] = [];
 
-  for (const { positions: dbPositions, ...dbMarket } of marketRows) {
-    const price = prices[dbMarket.oracle];
-    if (dbMarket.oracle === zeroAddress) {
-      continue;
+  const getPrice = (oracle: Address) => {
+    const price = prices[oracle];
+    if (oracle === zeroAddress) {
+      return;
     } else if (price === undefined) {
-      warnings.push(`${dbMarket.oracle} was skipped when fetching prices -- SHOULD NEVER HAPPEN.`);
-      continue;
+      warnings.push(`${oracle} was skipped when fetching prices -- SHOULD NEVER HAPPEN.`);
+      return;
     } else if (price.status === "failure") {
-      warnings.push(`${dbMarket.oracle} failed to return a price ${price.error}`);
-      continue;
+      warnings.push(`${oracle} failed to return a price ${price.error}`);
+      return;
     }
+    return price.result;
+  };
+
+  for (const { positions: dbPositions, ...dbMarket } of marketRows) {
+    const price = getPrice(dbMarket.oracle);
+    if (price === undefined) continue;
 
     const market = new Market({
       ...dbMarket,
       params: new MarketParams(dbMarket),
-      price: price.result,
+      price,
     }).accrueInterest(now);
     // Restructure data for use with @morpho-org/blue-sdk (`AccrualPosition`s)
     const positionsLiq: ILiquidatablePosition[] = dbPositions.map((dbPosition) => {
@@ -139,12 +145,16 @@ export async function getLiquidatablePositions({
     const positionsPreLiq: ILiquidatablePosition[] = (
       preLiquidationCandidates.get(market.id) ?? []
     ).map((c) => {
+      // If this is `undefined`, the position will be filtered out later when
+      // checking `seizableCollateral > 0n`. This is what we want.
+      const preLiquidationOraclePrice = getPrice(c.preLiquidationContract.preLiquidationOracle);
       const iposition = {
         ...c.position,
         preLiquidation: c.preLiquidationContract.address,
         preLiquidationParams: (({ chainId, address, marketId, ...rest }) => rest)(
           c.preLiquidationContract,
         ),
+        preLiquidationOraclePrice,
       };
       return {
         // NOTE: We spread `iposition` rather than the `PreLiquidationPosition` to minimize bandwidth
