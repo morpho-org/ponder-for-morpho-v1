@@ -105,7 +105,11 @@ export async function getLiquidatablePositions({
   const now = (Date.now() / 1000).toFixed(0);
 
   const warnings: string[] = [];
-  const results: { market: IMarket; positions: ILiquidatablePosition[] }[] = [];
+  const results: {
+    market: IMarket;
+    positionsLiq: ILiquidatablePosition[];
+    positionsPreLiq: ILiquidatablePosition[];
+  }[] = [];
 
   const getPrice = (oracle: Address) => {
     const price = prices[oracle];
@@ -165,25 +169,23 @@ export async function getLiquidatablePositions({
       };
     });
 
-    // Combine
-    const positions: ILiquidatablePosition[] = [...positionsLiq, ...positionsPreLiq].filter(
-      (a) => a.seizableCollateral > 0n,
-    );
-    positions.sort((a, b) => (a.seizableCollateral > b.seizableCollateral ? -1 : 1));
+    // Sort
+    positionsLiq.sort((a, b) => (a.seizableCollateral > b.seizableCollateral ? -1 : 1));
+    positionsPreLiq.sort((a, b) => (a.seizableCollateral > b.seizableCollateral ? -1 : 1));
 
     // Only keep the first occurrence of each user. They may have approved multiple PreLiquidation
     // contracts, but we only care about the one with the largest `seizableCollateral`.
-    const bestPositions: typeof positions = [];
+    const positionsPreLiqBest: typeof positionsPreLiq = [];
     const userSet = new Set<Address>();
 
-    for (const position of positions) {
+    for (const position of positionsPreLiq) {
       if (!userSet.has(position.user)) {
-        bestPositions.push(position);
+        positionsPreLiqBest.push(position);
         userSet.add(position.user);
       }
     }
 
-    results.push({ market, positions: bestPositions });
+    results.push({ market, positionsLiq, positionsPreLiq: positionsPreLiqBest });
   }
 
   return { warnings, results };
