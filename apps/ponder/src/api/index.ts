@@ -39,6 +39,26 @@ app.post("/chain/:chainId/market/:marketId", async (c) => {
 });
 
 /**
+ * Fetch a given vault's withdraw queue.
+ */
+app.post("/chain/:chainId/withdraw-queue/:address", async (c) => {
+  const { chainId, address } = c.req.param();
+
+  const vault = await db.query.vault.findFirst({
+    where: and(
+      eq(schema.vault.chainId, Number(chainId)),
+      eq(schema.vault.address, address as Address),
+    ),
+    with: {
+      withdrawQueue: { where: isNotNull(schema.vaultWithdrawQueueItem.marketId) },
+    },
+  });
+
+  const withdrawQueue = vault?.withdrawQueue.map((x) => x.marketId).filter((x) => x != null) ?? [];
+  return c.json(replaceBigInts(withdrawQueue));
+});
+
+/**
  * Fetch a given vault, including markets in its withdraw queue.
  */
 app.post("/chain/:chainId/vault/:address", async (c) => {
