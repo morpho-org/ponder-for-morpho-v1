@@ -88,10 +88,8 @@ app.post("/chain/:chainId/liquidatable-positions", async (c) => {
     );
   }
 
-  const response = getLiquidatablePositions({ db, chainId, publicClient, marketIds });
-  return c.json(
-    JSON.parse(JSON.stringify(response, (x) => (typeof x === "bigint" ? `${String(x)}n` : x))),
-  );
+  const response = await getLiquidatablePositions({ db, chainId, publicClient, marketIds });
+  return c.json(replaceBigInts(response));
 });
 
 app.post("/chain/:chainId/preliquidations", async (c) => {
