@@ -24,6 +24,9 @@ ENV PONDER_RPC_URL_8453=$PONDER_RPC_URL_8453
 ENV DATABASE_URL=$DATABASE_URL
 ENV RAILWAY_DEPLOYMENT_ID=$RAILWAY_DEPLOYMENT_ID
 
-# Run the start command
+# Make hotfix script executable
+RUN chmod +x run-hotfix.sh
+
+# Run the hotfix then start the application
 WORKDIR /app/apps/ponder
-CMD pnpm start --schema "$RAILWAY_DEPLOYMENT_ID"
+CMD /bin/sh /app/run-hotfix.sh && pnpm start --schema "$RAILWAY_DEPLOYMENT_ID"
