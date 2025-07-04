@@ -14,6 +14,7 @@ export default createConfig({
     base: { id: 8453, rpc: process.env.PONDER_RPC_URL_8453 },
     unichain: { id: 130, rpc: process.env.PONDER_RPC_URL_130 },
     polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
+    katana: { id: 747474, rpc: process.env.PONDER_RPC_URL_747474 },
   },
   contracts: {
     Morpho: {
@@ -34,6 +35,10 @@ export default createConfig({
         polygon: {
           address: "0x1bF0c2541F820E775182832f06c0B7Fc27A25f67",
           startBlock: 66931042,
+        },
+        katana: {
+          address: "0xD50F2DffFd62f94Ee4AEd9ca05C61d0753268aBc",
+          startBlock: 2741069,
         },
       },
     },
@@ -61,6 +66,10 @@ export default createConfig({
         polygon: {
           address: "0xa9c87daB340631C34BB738625C70499e29ddDC98",
           startBlock: 66931118,
+        },
+        katana: {
+          address: "0x1c8De6889acee12257899BFeAa2b7e534de32E16",
+          startBlock: 2741420,
         },
       },
     },
@@ -105,6 +114,14 @@ export default createConfig({
           }),
           startBlock: 66931118,
         },
+        katana: {
+          address: factory({
+            address: "0x1c8De6889acee12257899BFeAa2b7e534de32E16",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 2741420,
+        },
       },
     },
     AdaptiveCurveIRM: {
@@ -126,6 +143,10 @@ export default createConfig({
           address: "0xe675A2161D4a6E2de2eeD70ac98EEBf257FBF0B0",
           startBlock: 66931042,
         },
+        katana: {
+          address: "0x4F708C0ae7deD3d74736594C2109C2E3c065B428",
+          startBlock: 2741069,
+        },
       },
     },
     PreLiquidationFactory: {
@@ -146,6 +167,10 @@ export default createConfig({
         polygon: {
           address: "0xeDadDe37D76c72b98725614d0b41C20Fe612d304",
           startBlock: 68074185,
+        },
+        katana: {
+          address: "0x678EB53A3bB79111263f47B84989d16D81c36D85",
+          startBlock: 2741993,
         },
       },
     },

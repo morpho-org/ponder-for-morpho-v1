@@ -4,11 +4,20 @@ import { db, publicClients } from "ponder:api";
 import schema from "ponder:schema";
 import { type Address, type Hex } from "viem";
 
+import ponderConfig from "../../ponder.config";
+
 import { getLiquidatablePositions } from "./liquidatable-positions";
 import { getPreliquidations } from "./preliquidations";
 
 function replaceBigInts<T>(value: T) {
   return replaceBigIntsBase(value, (x) => `${String(x)}n`);
+}
+
+function getPublicClientFor(chainId: number) {
+  const name = Object.entries(ponderConfig.chains).find(([, v]) => v.id === chainId)?.[0] as
+    | keyof typeof ponderConfig.chains
+    | undefined;
+  return name ? publicClients[name] : undefined;
 }
 
 const app = new Hono();
@@ -95,10 +104,7 @@ app.post("/chain/:chainId/liquidatable-positions", async (c) => {
   const chainId = parseInt(chainIdRaw, 10);
   const marketIds = [...new Set(marketIdsRaw)];
 
-  const publicClient = Object.values(publicClients).find(
-    (publicClient) => publicClient.chain?.id === chainId,
-  );
-
+  const publicClient = getPublicClientFor(chainId);
   if (!publicClient) {
     return c.json(
       {
@@ -123,10 +129,7 @@ app.post("/chain/:chainId/preliquidations", async (c) => {
   const chainId = parseInt(chainIdRaw, 10);
   const marketIds = [...new Set(marketIdsRaw)];
 
-  const publicClient = Object.values(publicClients).find(
-    (publicClient) => publicClient.chain?.id === chainId,
-  );
-
+  const publicClient = getPublicClientFor(chainId);
   if (!publicClient) {
     return c.json(
       {

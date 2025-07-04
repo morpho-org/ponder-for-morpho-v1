@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "lint": "pnpm --filter '@ponder-template/*' lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node scripts/shim-katana.cjs"
   },
   "lint-staged": {
     "*.ts": [
