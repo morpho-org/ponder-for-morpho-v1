@@ -15,6 +15,7 @@ export default createConfig({
     unichain: { id: 130, rpc: process.env.PONDER_RPC_URL_130 },
     polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
     katana: { id: 747474, rpc: process.env.PONDER_RPC_URL_747474 },
+    arbitrum: { id: 42161, rpc: process.env.PONDER_RPC_URL_42161 },
   },
   contracts: {
     Morpho: {
@@ -39,6 +40,10 @@ export default createConfig({
         katana: {
           address: "0xD50F2DffFd62f94Ee4AEd9ca05C61d0753268aBc",
           startBlock: 2741069,
+        },
+        arbitrum: {
+          address: "0x6c247b1F6182318877311737BaC0844bAa518F5e",
+          startBlock: 296446593,
         },
       },
     },
@@ -70,6 +75,10 @@ export default createConfig({
         katana: {
           address: "0x1c8De6889acee12257899BFeAa2b7e534de32E16",
           startBlock: 2741420,
+        },
+        arbitrum: {
+          address: "0x878988f5f561081deEa117717052164ea1Ef0c82",
+          startBlock: 296447195,
         },
       },
     },
@@ -122,6 +131,14 @@ export default createConfig({
           }),
           startBlock: 2741420,
         },
+        arbitrum: {
+          address: factory({
+            address: "0x878988f5f561081deEa117717052164ea1Ef0c82",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 296447195,
+        },
       },
     },
     AdaptiveCurveIRM: {
@@ -147,6 +164,10 @@ export default createConfig({
           address: "0x4F708C0ae7deD3d74736594C2109C2E3c065B428",
           startBlock: 2741069,
         },
+        arbitrum: {
+          address: "0x937Ce2d6c488b361825D2DB5e8A70e26d48afEd5",
+          startBlock: 296446593,
+        },
       },
     },
     PreLiquidationFactory: {
@@ -171,6 +192,10 @@ export default createConfig({
         katana: {
           address: "0x678EB53A3bB79111263f47B84989d16D81c36D85",
           startBlock: 2741993,
+        },
+        arbitrum: {
+          address: "0x635c31B5DF1F7EFbCbC07E302335Ef4230758e3d",
+          startBlock: 307326238,
         },
       },
     },
