@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       ponder:
-        specifier: ^0.11.5
-        version: 0.11.5(@opentelemetry/api@1.9.0)(@types/node@20.17.50)(hono@4.7.10)(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))
+        specifier: ^0.12.3
+        version: 0.12.3(@opentelemetry/api@1.9.0)(@types/node@20.17.50)(hono@4.7.10)(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))
       viem:
         specifier: ^2.21.3
         version: 2.30.0(typescript@5.8.3)
@@ -435,8 +435,8 @@ packages:
       typescript:
         optional: true
 
-  '@ponder/utils@0.2.7':
-    resolution: {integrity: sha512-7BcDd8y6Dmi+Bys4D0m+BULH9ug2XZ5Lsa4CwGSsJrY4OIQJerib6TENzTFHGR65XBV1gu9xLct9pMz7RpvAKg==}
+  '@ponder/utils@0.2.10':
+    resolution: {integrity: sha512-h9y+L+dUEOkLn0oh0GECJ1kWJNzrFtLoMPODR7NsvqGcovq5ZaGFvFxb7+iDOUN6f6xn2M+cUoYjkmMsskw8+A==}
     peerDependencies:
       typescript: '>=5.0.4'
       viem: '>=2'
@@ -1732,8 +1732,8 @@ packages:
     resolution: {integrity: sha512-ip4qdzjkAyDDZklUaZkcRFb2iA118H9SgRh8yzTkSQK8HilsOJF7rSY8HoW5+I0M46AZgX/pxbprf2vvzQCE0Q==}
     hasBin: true
 
-  ponder@0.11.5:
-    resolution: {integrity: sha512-9UrqlP/MA0doWKaoB8bOKR8bLSYhcS17oUeLEvgGAKpGD+XAM/3Yb5o83Q4GC6SVChUW6Lh74MxTAQsoALz9CQ==}
+  ponder@0.12.3:
+    resolution: {integrity: sha512-gnjzc1ZYsyREXFFRXZbAtxjYYEEfRLUj+itUkhY/NU1YTZP6KFTvFwVdkPd9WUW9xr8Dgn7gcpducRqr4vjvGA==}
     engines: {node: '>=18.14'}
     hasBin: true
     peerDependencies:
@@ -2590,7 +2590,7 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@ponder/utils@0.2.7(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))':
+  '@ponder/utils@0.2.10(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))':
     dependencies:
       viem: 2.30.0(typescript@5.8.3)
     optionalDependencies:
@@ -3763,7 +3763,7 @@ snapshots:
       sonic-boom: 3.8.1
       thread-stream: 2.7.0
 
-  ponder@0.11.5(@opentelemetry/api@1.9.0)(@types/node@20.17.50)(hono@4.7.10)(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3)):
+  ponder@0.12.3(@opentelemetry/api@1.9.0)(@types/node@20.17.50)(hono@4.7.10)(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3)):
     dependencies:
       '@babel/code-frame': 7.27.1
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -3772,7 +3772,7 @@ snapshots:
       '@escape.tech/graphql-armor-max-depth': 2.4.0
       '@escape.tech/graphql-armor-max-tokens': 2.5.0
       '@hono/node-server': 1.13.3(hono@4.7.10)
-      '@ponder/utils': 0.2.7(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))
+      '@ponder/utils': 0.2.10(typescript@5.8.3)(viem@2.30.0(typescript@5.8.3))
       abitype: 0.10.3(typescript@5.8.3)
       ansi-escapes: 7.0.0
       commander: 12.1.0

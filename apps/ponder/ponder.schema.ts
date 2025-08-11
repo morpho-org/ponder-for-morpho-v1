@@ -237,7 +237,7 @@ export const vaultWithdrawQueueItemRelations = vaultQueueItemRelations(vaultWith
                            [HELPERS]
 //////////////////////////////////////////////////////////////*/
 
-function vaultQueueItem<name extends string>(name: name) {
+function vaultQueueItem<name extends string>(name: name extends "" ? never : name) {
   return onchainTable(
     name,
     (t) => ({

@@ -55,7 +55,7 @@ ponder.on("MetaMorpho:OwnershipTransferStarted", async ({ event, context }) => {
 });
 
 ponder.on("MetaMorpho:OwnershipTransferred", async ({ event, context }) => {
-  // This may error because it's emitted in the vault's constructor
+  // TODO: This may error because it's emitted in the vault's constructor
   try {
     await context.db
       .update(vault, { chainId: context.chain.id, address: event.log.address })
