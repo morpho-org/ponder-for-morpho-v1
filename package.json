@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "pnpm --filter '@ponder-template/*' lint",
     "prepare": "husky",
-    "postinstall": "node scripts/shim-katana.cjs"
+    "postinstall": "node scripts/shim-katana.cjs && node scripts/shim-tac.cjs"
   },
   "lint-staged": {
     "*.ts": [

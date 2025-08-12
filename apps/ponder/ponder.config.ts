@@ -16,6 +16,7 @@ export default createConfig({
     polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
     katana: { id: 747474, rpc: process.env.PONDER_RPC_URL_747474 },
     arbitrum: { id: 42161, rpc: process.env.PONDER_RPC_URL_42161 },
+    tac: { id: 239, rpc: process.env.PONDER_RPC_URL_239 },
   },
   contracts: {
     Morpho: {
@@ -44,6 +45,10 @@ export default createConfig({
         arbitrum: {
           address: "0x6c247b1F6182318877311737BaC0844bAa518F5e",
           startBlock: 296446593,
+        },
+        tac: {
+          address: "0x918B9F2E4B44E20c6423105BB6cCEB71473aD35c",
+          startBlock: 853025,
         },
       },
     },
@@ -79,6 +84,10 @@ export default createConfig({
         arbitrum: {
           address: "0x878988f5f561081deEa117717052164ea1Ef0c82",
           startBlock: 296447195,
+        },
+        tac: {
+          address: "0xcDA78f4979d17Ec93052A84A12001fe0088AD734",
+          startBlock: 978654,
         },
       },
     },
@@ -139,6 +148,14 @@ export default createConfig({
           }),
           startBlock: 296447195,
         },
+        tac: {
+          address: factory({
+            address: "0xcDA78f4979d17Ec93052A84A12001fe0088AD734",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 978654,
+        },
       },
     },
     AdaptiveCurveIRM: {
@@ -168,6 +185,10 @@ export default createConfig({
           address: "0x937Ce2d6c488b361825D2DB5e8A70e26d48afEd5",
           startBlock: 296446593,
         },
+        tac: {
+          address: "0x7E82b16496fA8CC04935528dA7F5A2C684A3C7A3",
+          startBlock: 853025,
+        },
       },
     },
     PreLiquidationFactory: {
@@ -196,6 +217,10 @@ export default createConfig({
         arbitrum: {
           address: "0x635c31B5DF1F7EFbCbC07E302335Ef4230758e3d",
           startBlock: 307326238,
+        },
+        tac: {
+          address: "0x5851C1e423A2F93aFb821834a63cA052D19ae4Ef",
+          startBlock: 978967,
         },
       },
     },
