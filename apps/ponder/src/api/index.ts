@@ -8,6 +8,7 @@ import ponderConfig from "../../ponder.config";
 
 import { getLiquidatablePositions } from "./liquidatable-positions";
 import { getPreliquidations } from "./preliquidations";
+import { requestFn } from "./rpc";
 
 function replaceBigInts<T>(value: T) {
   return replaceBigIntsBase(value, (x) => `${String(x)}n`);
@@ -141,6 +142,27 @@ app.post("/chain/:chainId/preliquidations", async (c) => {
 
   const response = await getPreliquidations({ db, chainId, publicClient, marketIds });
   return c.json(replaceBigInts(response));
+});
+
+/**
+ * JSON-RPC endpoint for eth_getLogs (subset implementation).
+ */
+app.post("/rpc/:chainId", async (c) => {
+  const { chainId: chainIdRaw } = c.req.param();
+
+  const chainId = parseInt(chainIdRaw, 10);
+
+  if (!getPublicClientFor(chainId)) {
+    return c.json(
+      {
+        error: `${chainIdRaw} is not one of the supported chains: [${Object.keys(publicClients).join(", ")}]`,
+      },
+      400,
+    );
+  }
+
+  const req = (await c.req.json()) as unknown as Parameters<typeof requestFn>[1];
+  return c.json(await requestFn(chainId, req));
 });
 
 export default app;
