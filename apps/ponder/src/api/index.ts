@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { rateLimiter } from "hono-rate-limiter";
 import {
   and,
   client,
@@ -17,6 +18,7 @@ import ponderConfig from "../../ponder.config";
 import { getLiquidatablePositions } from "./liquidatable-positions";
 import { getPreliquidations } from "./preliquidations";
 import { requestFn } from "./rpc";
+import { keyGenerator } from "./utils/rate-limiting";
 import type { JsonRpcMetadata, RpcParameters } from "./utils/types";
 
 function replaceBigInts<T>(value: T) {
@@ -31,6 +33,14 @@ function getPublicClientFor(chainId: number) {
 }
 
 const app = new Hono();
+
+app.use(
+  rateLimiter({
+    windowMs: 1000,
+    limit: 10, // Limit each IP to 10 requests per second
+    keyGenerator,
+  }),
+);
 
 app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));

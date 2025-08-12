@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@morpho-org/blue-sdk": "^3.0.9",
-    "hono": "^4.5.0"
+    "hono": "^4.5.0",
+    "hono-rate-limiter": "^0.4.2"
   },
   "devDependencies": {
     "@ponder/client": "^0.11.5"

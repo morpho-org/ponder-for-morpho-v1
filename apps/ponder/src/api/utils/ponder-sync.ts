@@ -127,7 +127,7 @@ export async function readPonderSyncLogs({
 
     return {
       address: row.address,
-      blockNumber: toHex(row.block_number),
+      blockNumber: toHex(BigInt(row.block_number)),
       blockHash: row.block_hash,
       data: row.data,
       logIndex: toHex(row.log_index),
