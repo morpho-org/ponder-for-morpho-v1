@@ -1,5 +1,13 @@
 import { Hono } from "hono";
-import { and, client, eq, graphql, isNotNull, replaceBigInts as replaceBigIntsBase } from "ponder";
+import {
+  and,
+  client,
+  eq,
+  graphql,
+  isNotNull,
+  type ReadonlyDrizzle,
+  replaceBigInts as replaceBigIntsBase,
+} from "ponder";
 import { db, publicClients } from "ponder:api";
 import schema from "ponder:schema";
 import { type Address, type Hex } from "viem";
@@ -9,6 +17,7 @@ import ponderConfig from "../../ponder.config";
 import { getLiquidatablePositions } from "./liquidatable-positions";
 import { getPreliquidations } from "./preliquidations";
 import { requestFn } from "./rpc";
+import type { JsonRpcMetadata, RpcParameters } from "./utils/types";
 
 function replaceBigInts<T>(value: T) {
   return replaceBigIntsBase(value, (x) => `${String(x)}n`);
@@ -152,7 +161,8 @@ app.post("/rpc/:chainId", async (c) => {
 
   const chainId = parseInt(chainIdRaw, 10);
 
-  if (!getPublicClientFor(chainId)) {
+  const publicClient = getPublicClientFor(chainId);
+  if (!publicClient) {
     return c.json(
       {
         error: `${chainIdRaw} is not one of the supported chains: [${Object.keys(publicClients).join(", ")}]`,
@@ -161,8 +171,10 @@ app.post("/rpc/:chainId", async (c) => {
     );
   }
 
-  const req = (await c.req.json()) as unknown as Parameters<typeof requestFn>[1];
-  return c.json(await requestFn(chainId, req));
+  const jsonRpcReq = (await c.req.json()) as unknown as JsonRpcMetadata & RpcParameters;
+  return c.json(
+    await requestFn({ db: db as unknown as ReadonlyDrizzle, chainId, publicClient, jsonRpcReq }),
+  );
 });
 
 export default app;

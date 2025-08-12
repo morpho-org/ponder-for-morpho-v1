@@ -7,7 +7,7 @@ import {
   MarketParams,
   PreLiquidationPosition,
 } from "@morpho-org/blue-sdk";
-import { and, eq, inArray, gt, ReadonlyDrizzle } from "ponder";
+import { and, eq, inArray, gt, type ReadonlyDrizzle } from "ponder";
 import { type Address, zeroAddress, type Hex, PublicClient } from "viem";
 
 import { oracleAbi } from "~/abis/Oracle";

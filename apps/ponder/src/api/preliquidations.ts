@@ -1,5 +1,5 @@
 import { type IPreLiquidationParams } from "@morpho-org/blue-sdk";
-import { and, eq, gt, inArray, ReadonlyDrizzle } from "ponder";
+import { and, eq, gt, inArray, type ReadonlyDrizzle } from "ponder";
 import { type Address, zeroAddress, type Hex, type PublicClient } from "viem";
 
 import { oracleAbi } from "~/abis/Oracle";
