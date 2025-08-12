@@ -195,13 +195,13 @@ async function eth_getLogs(
         );
         conditions.push(sql`LOWER(${topicColumn}) IN (${topicList})`);
       } else {
-        conditions.push(sql`LOWER(${topicColumn}) = '${topic.toLowerCase()}'`);
+        conditions.push(sql`LOWER(${topicColumn}) = ${topic.toLowerCase()}`);
       }
     });
   }
 
   if (params.blockHash) {
-    conditions.push(sql`LOWER(block_hash) = '${params.blockHash.toLowerCase()}'`);
+    conditions.push(sql`LOWER(block_hash) = ${params.blockHash.toLowerCase()}`);
   }
 
   // Query logs
@@ -229,11 +229,16 @@ async function eth_getLogs(
 
   // Check if we have any logs for the specified address
   if (params.address && res.rows?.length === 0) {
-    const w = sql.join([conditions[0], conditions[3]], sql` AND `);
+    const addresses = Array.isArray(params.address) ? params.address : [params.address];
+    const addressList = sql.join(
+      addresses.map((addr) => sql`${addr.toLowerCase()}`),
+      sql`, `,
+    );
     const addressCheck = (await db.execute(sql`
       SELECT COUNT(*) as count
       FROM ponder_sync.logs
-      WHERE ${w}
+      WHERE chain_id = ${chainId.toFixed(0)}
+        AND LOWER(address) IN (${addressList})
     `)) as { rows?: { count: number }[] };
 
     if (addressCheck.rows?.[0]?.count === 0) {
