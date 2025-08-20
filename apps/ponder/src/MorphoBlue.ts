@@ -173,7 +173,7 @@ ponder.on("Morpho:Liquidate", async ({ event, context }) => {
     // Row must exist because `Liquidate` cannot preceed `CreateMarket`.
     context.db.update(market, { chainId: context.chain.id, id: event.args.id }).set((row) => ({
       totalSupplyAssets: row.totalSupplyAssets - event.args.badDebtAssets,
-      totalSupplyShares: row.totalSupplyAssets - event.args.badDebtShares,
+      totalSupplyShares: row.totalSupplyShares - event.args.badDebtShares,
       totalBorrowAssets: row.totalBorrowAssets - event.args.repaidAssets,
       totalBorrowShares: row.totalBorrowShares - event.args.repaidShares,
       lastUpdate: event.block.timestamp,
