@@ -20,10 +20,8 @@ export default createConfig({
     abstract: { id: 2741, rpc: process.env.PONDER_RPC_URL_2741 },
     bitlayer: { id: 200901, rpc: process.env.PONDER_RPC_URL_200901 },
     botanix: { id: 3637, rpc: process.env.PONDER_RPC_URL_3637 },
-    camp: { id: 484, rpc: process.env.PONDER_RPC_URL_484 },
     celo: { id: 42220, rpc: process.env.PONDER_RPC_URL_42220 },
     corn: { id: 21000000, rpc: process.env.PONDER_RPC_URL_21000000 },
-    etherlink: { id: 42793, rpc: process.env.PONDER_RPC_URL_42793 },
     flame: { id: 253368190, rpc: process.env.PONDER_RPC_URL_253368190 },
     fraxtal: { id: 252, rpc: process.env.PONDER_RPC_URL_252 },
     hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
@@ -37,6 +35,8 @@ export default createConfig({
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
     zircuit: { id: 48900, rpc: process.env.PONDER_RPC_URL_48900 },
+    /* camp: { id: 484, rpc: process.env.PONDER_RPC_URL_484 },
+    etherlink: { id: 42793, rpc: process.env.PONDER_RPC_URL_42793 }, */
   },
   contracts: {
     Morpho: {
@@ -82,10 +82,6 @@ export default createConfig({
           address: "0x8183d41556Be257fc7aAa4A48396168C8eF2bEAD",
           startBlock: 450759,
         },
-        camp: {
-          address: "0xea4f2979D7A99B40404b447Cf71c008e3805760F",
-          startBlock: 2410315,
-        },
         celo: {
           address: "0xd24ECdD8C1e0E57a4E26B1a7bbeAa3e95466A569",
           startBlock: 40249329,
@@ -93,10 +89,6 @@ export default createConfig({
         corn: {
           address: "0xc2B1E031540e3F3271C5F3819F0cC7479a8DdD90",
           startBlock: 251401,
-        },
-        etherlink: {
-          address: "0xbCE7364E63C3B13C73E9977a83c9704E2aCa876e",
-          startBlock: 21047448,
         },
         flame: {
           address: "0x63971484590b054b6Abc4FEe9F31BC6F68CfeC04",
@@ -150,6 +142,14 @@ export default createConfig({
           address: "0xA902A365Fe10B4a94339B5A2Dc64F60c1486a5c8",
           startBlock: 14640172,
         },
+        /* camp: {
+          address: "0xea4f2979D7A99B40404b447Cf71c008e3805760F",
+          startBlock: 2410315,
+        },
+        etherlink: {
+          address: "0xbCE7364E63C3B13C73E9977a83c9704E2aCa876e",
+          startBlock: 21047448,
+        }, */
       },
     },
     MetaMorphoFactory: {
@@ -201,10 +201,6 @@ export default createConfig({
           address: "0xADfE7FF70F98157E020aD7725e149D2E573480Ee",
           startBlock: 451126,
         },
-        camp: {
-          address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
-          startBlock: 2410440,
-        },
         celo: {
           address: "0x6870aA9f66C1e5Efe8Dbe8730e86E9e91f688275",
           startBlock: 40259931,
@@ -212,10 +208,6 @@ export default createConfig({
         corn: {
           address: "0xe430821595602eA5DD0cD350f86987437c7362fA",
           startBlock: 253027,
-        },
-        etherlink: {
-          address: "0x997a79c3C04c5B9eb27d343ae126bcCFb5D74781",
-          startBlock: 21050315,
         },
         flame: {
           address: "0xf2BD176D3A89f6E9f6D0c7F17C4Ae6A3515007a8",
@@ -269,6 +261,14 @@ export default createConfig({
           address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
           startBlock: 14812082,
         },
+        /* camp: {
+          address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
+          startBlock: 2410440,
+        },
+        etherlink: {
+          address: "0x997a79c3C04c5B9eb27d343ae126bcCFb5D74781",
+          startBlock: 21050315,
+        }, */
       },
     },
     MetaMorpho: {
@@ -360,14 +360,6 @@ export default createConfig({
           }),
           startBlock: 450759,
         },
-        camp: {
-          address: factory({
-            address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 2410440,
-        },
         celo: {
           address: factory({
             address: "0x6870aA9f66C1e5Efe8Dbe8730e86E9e91f688275",
@@ -383,14 +375,6 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 253027,
-        },
-        etherlink: {
-          address: factory({
-            address: "0x997a79c3C04c5B9eb27d343ae126bcCFb5D74781",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 21050315,
         },
         flame: {
           address: factory({
@@ -496,6 +480,22 @@ export default createConfig({
           }),
           startBlock: 14812082,
         },
+        /* camp: {
+          address: factory({
+            address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 2410440,
+        },
+        etherlink: {
+          address: factory({
+            address: "0x997a79c3C04c5B9eb27d343ae126bcCFb5D74781",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 21050315,
+        }, */
       },
     },
     AdaptiveCurveIRM: {
@@ -541,10 +541,6 @@ export default createConfig({
           address: "0x28021Ef0269C83302c09D2A89f7b202C4AeDf0C2",
           startBlock: 450759,
         },
-        camp: {
-          address: "0xd5661D965cc60ed1954d4f6725b766051De3ef97",
-          startBlock: 2410315,
-        },
         celo: {
           address: "0x683CAAADdfA2F42e24880E202676526d501a5dED",
           startBlock: 40249329,
@@ -552,10 +548,6 @@ export default createConfig({
         corn: {
           address: "0x58a42117d753a0e69694545DfA19d64c2fB759fB",
           startBlock: 251401,
-        },
-        etherlink: {
-          address: "0xC1523BE776e66ba07b609b1914D0925278f21FE5",
-          startBlock: 21047448,
         },
         flame: {
           address: "0x69b29378a45B46A5c68a5436dCfF6C301E923833",
@@ -609,6 +601,14 @@ export default createConfig({
           address: "0xBADb1809ecF658F36e31CcC980F72de029e1cE46",
           startBlock: 14640172,
         },
+        /* camp: {
+          address: "0xd5661D965cc60ed1954d4f6725b766051De3ef97",
+          startBlock: 2410315,
+        },
+        etherlink: {
+          address: "0xC1523BE776e66ba07b609b1914D0925278f21FE5",
+          startBlock: 21047448,
+        }, */
       },
     },
     PreLiquidationFactory: {
@@ -654,10 +654,6 @@ export default createConfig({
           address: "0x2e999ddEbd85bdA0B87C370f30ad18cCb943De60",
           startBlock: 451328,
         },
-        camp: {
-          address: "0xD55fA5DF6F1A21C2B93009A702aad3a0891C1B48",
-          startBlock: 2471517,
-        },
         celo: {
           address: "0x717a3eF7D366F5ce4636011924D0Bd65ea5eCE2f",
           startBlock: 41808392,
@@ -665,10 +661,6 @@ export default createConfig({
         corn: {
           address: "0xb9065AC18d3EBdb3263B77B587f9c5CD570545D1",
           startBlock: 253107,
-        },
-        etherlink: {
-          address: "0xd1c37fDd941256FC184eF3A07Be540a90b81Ec21",
-          startBlock: 21050766,
         },
         flame: {
           address: "0x78acCefb2A81a5827C672080cB0b9C98b07d39C4",
@@ -722,6 +714,14 @@ export default createConfig({
           address: "0x09d7629E82DdD80890495672201fe5FE1f909B0b",
           startBlock: 14812316,
         },
+        /* camp: {
+          address: "0xD55fA5DF6F1A21C2B93009A702aad3a0891C1B48",
+          startBlock: 2471517,
+        },
+        etherlink: {
+          address: "0xd1c37fDd941256FC184eF3A07Be540a90b81Ec21",
+          startBlock: 21050766,
+        }, */
       },
     },
   },
