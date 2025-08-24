@@ -44,9 +44,9 @@ export default createConfig({
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
-    zircuit: { id: 48900, rpc: process.env.PONDER_RPC_URL_48900 },
-    /* camp: { id: 484, rpc: process.env.PONDER_RPC_URL_484 },
-    etherlink: { id: 42793, rpc: process.env.PONDER_RPC_URL_42793 }, */
+    // zircuit: { id: 48900, rpc: process.env.PONDER_RPC_URL_48900 },
+    // camp: { id: 484, rpc: process.env.PONDER_RPC_URL_484 },
+    // etherlink: { id: 42793, rpc: process.env.PONDER_RPC_URL_42793 },
   },
   contracts: {
     Morpho: {
@@ -148,11 +148,11 @@ export default createConfig({
           address: "0xE741BC7c34758b4caE05062794E8Ae24978AF432",
           startBlock: 9025669,
         },
-        zircuit: {
+        /* zircuit: {
           address: "0xA902A365Fe10B4a94339B5A2Dc64F60c1486a5c8",
           startBlock: 14640172,
         },
-        /* camp: {
+        camp: {
           address: "0xea4f2979D7A99B40404b447Cf71c008e3805760F",
           startBlock: 2410315,
         },
@@ -267,11 +267,11 @@ export default createConfig({
           address: "0x4DBB3a642a2146d5413750Cca3647086D9ba5F12",
           startBlock: 9025733,
         },
-        zircuit: {
+        /* zircuit: {
           address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
           startBlock: 14812082,
         },
-        /* camp: {
+        camp: {
           address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
           startBlock: 2410440,
         },
@@ -482,7 +482,7 @@ export default createConfig({
           }),
           startBlock: 9025733,
         },
-        zircuit: {
+        /* zircuit: {
           address: factory({
             address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
             event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
@@ -490,7 +490,7 @@ export default createConfig({
           }),
           startBlock: 14812082,
         },
-        /* camp: {
+        camp: {
           address: factory({
             address: "0x3F4b9246b7Cd3F7671c70BeBd5AAFC08e5bb5f16",
             event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
@@ -607,11 +607,11 @@ export default createConfig({
           address: "0x34E99D604751a72cF8d0CFDf87069292d82De472",
           startBlock: 9025669,
         },
-        zircuit: {
+        /* zircuit: {
           address: "0xBADb1809ecF658F36e31CcC980F72de029e1cE46",
           startBlock: 14640172,
         },
-        /* camp: {
+        camp: {
           address: "0xd5661D965cc60ed1954d4f6725b766051De3ef97",
           startBlock: 2410315,
         },
@@ -720,11 +720,11 @@ export default createConfig({
           address: "0xe3cE2051a24e58DBFC0eFBe4c2d9e89c5eAe4695",
           startBlock: 10273494,
         },
-        zircuit: {
+        /* zircuit: {
           address: "0x09d7629E82DdD80890495672201fe5FE1f909B0b",
           startBlock: 14812316,
         },
-        /* camp: {
+        camp: {
           address: "0xD55fA5DF6F1A21C2B93009A702aad3a0891C1B48",
           startBlock: 2471517,
         },
