@@ -1,5 +1,5 @@
 import { createConfig, factory } from "ponder";
-import { getAbiItem } from "viem";
+import { fallback, getAbiItem, http } from "viem";
 
 import { adaptiveCurveIrmAbi } from "./abis/AdaptiveCurveIrm";
 import { metaMorphoAbi } from "./abis/MetaMorpho";
@@ -25,7 +25,17 @@ export default createConfig({
     flame: { id: 253368190, rpc: process.env.PONDER_RPC_URL_253368190 },
     fraxtal: { id: 252, rpc: process.env.PONDER_RPC_URL_252 },
     hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
-    hyperevm: { id: 999, rpc: process.env.PONDER_RPC_URL_999 },
+    hyperevm: {
+      id: 999,
+      rpc: fallback(
+        (process.env.PONDER_RPC_URL_999 ? [http(process.env.PONDER_RPC_URL_999)] : []).concat([
+          http("https://hyperliquid.drpc.org"),
+          http("https://rpc.hyperliquid.xyz/evm"),
+          http("http://rpc.hypurrscan.io"),
+          http("https://rpc.purroofgroup.com"),
+        ]),
+      ),
+    },
     ink: { id: 57073, rpc: process.env.PONDER_RPC_URL_57073 },
     lisk: { id: 1135, rpc: process.env.PONDER_RPC_URL_1135 },
     mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
