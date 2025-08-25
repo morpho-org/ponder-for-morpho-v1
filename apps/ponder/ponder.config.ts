@@ -1,5 +1,5 @@
 import { createConfig, factory } from "ponder";
-import { fallback, getAbiItem, http } from "viem";
+import { getAbiItem } from "viem";
 
 import { adaptiveCurveIrmAbi } from "./abis/AdaptiveCurveIrm";
 import { metaMorphoAbi } from "./abis/MetaMorpho";
@@ -25,17 +25,7 @@ export default createConfig({
     flame: { id: 253368190, rpc: process.env.PONDER_RPC_URL_253368190 },
     fraxtal: { id: 252, rpc: process.env.PONDER_RPC_URL_252 },
     hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
-    hyperevm: {
-      id: 999,
-      rpc: fallback(
-        (process.env.PONDER_RPC_URL_999 ? [http(process.env.PONDER_RPC_URL_999)] : []).concat([
-          http("https://hyperliquid.drpc.org"),
-          http("https://rpc.hyperliquid.xyz/evm"),
-          http("http://rpc.hypurrscan.io"),
-          http("https://rpc.purroofgroup.com"),
-        ]),
-      ),
-    },
+    // hyperevm: { id: 999, rpc: process.env.PONDER_RPC_URL_999 },
     ink: { id: 57073, rpc: process.env.PONDER_RPC_URL_57073 },
     lisk: { id: 1135, rpc: process.env.PONDER_RPC_URL_1135 },
     mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
@@ -112,10 +102,10 @@ export default createConfig({
           address: "0xa4Ca2c2e25b97DA19879201bA49422bc6f181f42",
           startBlock: 1188872,
         },
-        hyperevm: {
-          address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
-          startBlock: 1988429,
-        },
+        // hyperevm: {
+        //   address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
+        //   startBlock: 1988429,
+        // },
         ink: {
           address: "0x857f3EefE8cbda3Bc49367C996cd664A880d3042",
           startBlock: 4078776,
@@ -231,10 +221,10 @@ export default createConfig({
           address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
           startBlock: 1188885,
         },
-        hyperevm: {
-          address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
-          startBlock: 1988677,
-        },
+        // hyperevm: {
+        //   address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
+        //   startBlock: 1988677,
+        // },
         ink: {
           address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
           startBlock: 4078830,
@@ -410,14 +400,14 @@ export default createConfig({
           }),
           startBlock: 1188885,
         },
-        hyperevm: {
-          address: factory({
-            address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 1988677,
-        },
+        // hyperevm: {
+        //   address: factory({
+        //     address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
+        //     event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+        //     parameter: "metaMorpho",
+        //   }),
+        //   startBlock: 1988677,
+        // },
         ink: {
           address: factory({
             address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
@@ -571,10 +561,10 @@ export default createConfig({
           address: "0xdEbdEa31624552DF904A065221cD14088ABDeD70",
           startBlock: 1188872,
         },
-        hyperevm: {
-          address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
-          startBlock: 1988429,
-        },
+        // hyperevm: {
+        //   address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
+        //   startBlock: 1988429,
+        // },
         ink: {
           address: "0x9515407b1512F53388ffE699524100e7270Ee57B",
           startBlock: 4078776,
@@ -684,10 +674,10 @@ export default createConfig({
           address: "0x40F2896C551194e364F7C846046C34d8a9FE97e4",
           startBlock: 1188907,
         },
-        hyperevm: {
-          address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
-          startBlock: 1988956,
-        },
+        // hyperevm: {
+        //   address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
+        //   startBlock: 1988956,
+        // },
         ink: {
           address: "0x30607fEa77168d2c0401B6f60F0B40E32F9339E3",
           startBlock: 6385077,
