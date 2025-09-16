@@ -11,8 +11,8 @@ This is meant as a starting point for new indexing projects, but can be run as-i
 To get started:
 
 ```shell
-git clone https://github.com/morpho-org/ponder-template.git
-cd ponder-template
+git clone https://github.com/morpho-org/ponder-for-morpho-v1.git
+cd ponder-for-morpho-v1
 # Install packages
 pnpm install
 # Run
