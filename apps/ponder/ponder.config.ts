@@ -13,7 +13,7 @@ export default createConfig({
     mainnet: { id: 1, rpc: process.env.PONDER_RPC_URL_1 },
     base: { id: 8453, rpc: process.env.PONDER_RPC_URL_8453 },
     unichain: { id: 130, rpc: process.env.PONDER_RPC_URL_130 },
-    // polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
+    polygon: { id: 137, rpc: process.env.PONDER_RPC_URL_137 },
     katana: { id: 747474, rpc: process.env.PONDER_RPC_URL_747474 },
     arbitrum: { id: 42161, rpc: process.env.PONDER_RPC_URL_42161 },
     tac: { id: 239, rpc: process.env.PONDER_RPC_URL_239 },
@@ -26,12 +26,12 @@ export default createConfig({
     etherlink: { id: 42793, rpc: process.env.PONDER_RPC_URL_42793 },
     // flame: { id: 253368190, rpc: process.env.PONDER_RPC_URL_253368190 },
     fraxtal: { id: 252, rpc: process.env.PONDER_RPC_URL_252 },
-    // hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
+    hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
     // hyperevm: { id: 999, rpc: process.env.PONDER_RPC_URL_999 },
     ink: { id: 57073, rpc: process.env.PONDER_RPC_URL_57073 },
-    // lisk: { id: 1135, rpc: process.env.PONDER_RPC_URL_1135 },
-    // mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
-    // plume: { id: 98866, rpc: process.env.PONDER_RPC_URL_98866 },
+    lisk: { id: 1135, rpc: process.env.PONDER_RPC_URL_1135 },
+    mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
+    plume: { id: 98866, rpc: process.env.PONDER_RPC_URL_98866 },
     scroll: { id: 534352, rpc: process.env.PONDER_RPC_URL_534352 },
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
@@ -90,9 +90,25 @@ export default createConfig({
           address: "0xa6030627d724bA78a59aCf43Be7550b4C5a0653b",
           startBlock: 15317931,
         },
+        hemi: {
+          address: "0xa4Ca2c2e25b97DA19879201bA49422bc6f181f42",
+          startBlock: 1188872,
+        },
         ink: {
           address: "0x857f3EefE8cbda3Bc49367C996cd664A880d3042",
           startBlock: 4078776,
+        },
+        lisk: {
+          address: "0x00cD58DEEbd7A2F1C55dAec715faF8aed5b27BF8",
+          startBlock: 15731231,
+        },
+        mode: {
+          address: "0xd85cE6BD68487E0AaFb0858FDE1Cd18c76840564",
+          startBlock: 19983370,
+        },
+        plume: {
+          address: "0x42b18785CE0Aed7BF7Ca43a39471ED4C0A3e0bB5",
+          startBlock: 765994,
         },
         scroll: {
           address: "0x2d012EdbAdc37eDc2BC62791B666f9193FDF5a55",
@@ -127,25 +143,9 @@ export default createConfig({
           address: "0x63971484590b054b6Abc4FEe9F31BC6F68CfeC04",
           startBlock: 5991116,
         },
-        hemi: {
-          address: "0xa4Ca2c2e25b97DA19879201bA49422bc6f181f42",
-          startBlock: 1188872,
-        },
         hyperevm: {
            address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
            startBlock: 1988429,
-        },
-        lisk: {
-          address: "0x00cD58DEEbd7A2F1C55dAec715faF8aed5b27BF8",
-          startBlock: 15731231,
-        },
-        mode: {
-          address: "0xd85cE6BD68487E0AaFb0858FDE1Cd18c76840564",
-          startBlock: 19983370,
-        },
-        plume: {
-          address: "0x42b18785CE0Aed7BF7Ca43a39471ED4C0A3e0bB5",
-          startBlock: 765994,
         },
         zircuit: {
           address: "0xA902A365Fe10B4a94339B5A2Dc64F60c1486a5c8",
@@ -210,9 +210,25 @@ export default createConfig({
           address: "0x27D4Af0AC9E7FDfA6D0853236f249CC27AE79488",
           startBlock: 15318007,
         },
+        hemi: {
+          address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
+          startBlock: 1188885,
+        },
         ink: {
           address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
           startBlock: 4078830,
+        },
+        lisk: {
+          address: "0x01dD876130690469F685a65C2B295A90a81BaD91",
+          startBlock: 15731333,
+        },
+        mode: {
+          address: "0xae5b0884bfff430493D6C844B9fd052Af7d79278",
+          startBlock: 19983443,
+        },
+        plume: {
+          address: "0x2525D453D9BA13921D5aB5D8c12F9202b0e19456",
+          startBlock: 766078,
         },
         scroll: {
           address: "0x56b65742ade55015e6480959808229Ad6dbc9295",
@@ -247,25 +263,9 @@ export default createConfig({
           address: "0xf2BD176D3A89f6E9f6D0c7F17C4Ae6A3515007a8",
           startBlock: 5991179,
         },
-        hemi: {
-          address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
-          startBlock: 1188885,
-        },
         hyperevm: {
            address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
            startBlock: 1988677,
-        },
-        lisk: {
-          address: "0x01dD876130690469F685a65C2B295A90a81BaD91",
-          startBlock: 15731333,
-        },
-        mode: {
-          address: "0xae5b0884bfff430493D6C844B9fd052Af7d79278",
-          startBlock: 19983443,
-        },
-        plume: {
-          address: "0x2525D453D9BA13921D5aB5D8c12F9202b0e19456",
-          startBlock: 766078,
         },
         zircuit: {
           address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
@@ -378,6 +378,14 @@ export default createConfig({
           }),
           startBlock: 15318007,
         },
+        hemi: {
+          address: factory({
+            address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 1188885,
+        },
         ink: {
           address: factory({
             address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
@@ -385,6 +393,30 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 4078830,
+        },
+        lisk: {
+          address: factory({
+            address: "0x01dD876130690469F685a65C2B295A90a81BaD91",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 15731333,
+        },
+        mode: {
+          address: factory({
+            address: "0xae5b0884bfff430493D6C844B9fd052Af7d79278",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 19983443,
+        },
+        plume: {
+          address: factory({
+            address: "0x2525D453D9BA13921D5aB5D8c12F9202b0e19456",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 766078,
         },
         scroll: {
           address: factory({
@@ -451,14 +483,6 @@ export default createConfig({
           }),
           startBlock: 5991179,
         },
-        hemi: {
-          address: factory({
-            address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 1188885,
-        },
         hyperevm: {
           address: factory({
             address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
@@ -466,30 +490,6 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 1988677,
-        },
-        lisk: {
-          address: factory({
-            address: "0x01dD876130690469F685a65C2B295A90a81BaD91",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 15731333,
-        },
-        mode: {
-          address: factory({
-            address: "0xae5b0884bfff430493D6C844B9fd052Af7d79278",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 19983443,
-        },
-        plume: {
-          address: factory({
-            address: "0x2525D453D9BA13921D5aB5D8c12F9202b0e19456",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 766078,
         },
         zircuit: {
           address: factory({
@@ -552,9 +552,25 @@ export default createConfig({
           address: "0xA0D4D77b5D9933073572E19C172BFE866312673b",
           startBlock: 15317931,
         },
+        hemi: {
+          address: "0xdEbdEa31624552DF904A065221cD14088ABDeD70",
+          startBlock: 1188872,
+        },
         ink: {
           address: "0x9515407b1512F53388ffE699524100e7270Ee57B",
           startBlock: 4078776,
+        },
+        lisk: {
+          address: "0x5576629f21D528A8c3e06C338dDa907B94563902",
+          startBlock: 15731231,
+        },
+        mode: {
+          address: "0xE3d46Ae190Cb39ccA3655E966DcEF96b4eAe1d1c",
+          startBlock: 19983370,
+        },
+        plume: {
+          address: "0x7420302Ddd469031Cd2282cd64225cCd46F581eA",
+          startBlock: 765994,
         },
         scroll: {
           address: "0xa5EA7500A27C0079961D93366A6e93aafF18CB90",
@@ -589,25 +605,9 @@ export default createConfig({
           address: "0x69b29378a45B46A5c68a5436dCfF6C301E923833",
           startBlock: 5991116,
         },
-        hemi: {
-          address: "0xdEbdEa31624552DF904A065221cD14088ABDeD70",
-          startBlock: 1188872,
-        },
         hyperevm: {
           address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
           startBlock: 1988429,
-        },
-        lisk: {
-          address: "0x5576629f21D528A8c3e06C338dDa907B94563902",
-          startBlock: 15731231,
-        },
-        mode: {
-          address: "0xE3d46Ae190Cb39ccA3655E966DcEF96b4eAe1d1c",
-          startBlock: 19983370,
-        },
-        plume: {
-          address: "0x7420302Ddd469031Cd2282cd64225cCd46F581eA",
-          startBlock: 765994,
         },
         zircuit: {
           address: "0xBADb1809ecF658F36e31CcC980F72de029e1cE46",
@@ -666,9 +666,25 @@ export default createConfig({
           address: "0x373ccddcd3F09D2e1430B3F2b290B9bF56Ae7336",
           startBlock: 16536231,
         },
+        hemi: {
+          address: "0x40F2896C551194e364F7C846046C34d8a9FE97e4",
+          startBlock: 1188907,
+        },
         ink: {
           address: "0x30607fEa77168d2c0401B6f60F0B40E32F9339E3",
           startBlock: 6385077,
+        },
+        lisk: {
+          address: "0xF2c325F26691b6556e6f66451bb38bDa37FEbaa7",
+          startBlock: 15731595,
+        },
+        mode: {
+          address: "0x249E4808264c545861e43728186a731dE7c7D745",
+          startBlock: 19983599,
+        },
+        plume: {
+          address: "0xF184156Cf6Ad4D3dA7F6449D40755A0f9de97ef3",
+          startBlock: 789925,
         },
         scroll: {
           address: "0xeD960178e4aDA0296786Fa79D84e8FDF7bd44B25",
@@ -703,25 +719,9 @@ export default createConfig({
           address: "0x78acCefb2A81a5827C672080cB0b9C98b07d39C4",
           startBlock: 5991315,
         },
-        hemi: {
-          address: "0x40F2896C551194e364F7C846046C34d8a9FE97e4",
-          startBlock: 1188907,
-        },
         hyperevm: {
           address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
           startBlock: 1988956,
-        },
-        lisk: {
-          address: "0xF2c325F26691b6556e6f66451bb38bDa37FEbaa7",
-          startBlock: 15731595,
-        },
-        mode: {
-          address: "0x249E4808264c545861e43728186a731dE7c7D745",
-          startBlock: 19983599,
-        },
-        plume: {
-          address: "0xF184156Cf6Ad4D3dA7F6449D40755A0f9de97ef3",
-          startBlock: 789925,
         },
         zircuit: {
           address: "0x09d7629E82DdD80890495672201fe5FE1f909B0b",
