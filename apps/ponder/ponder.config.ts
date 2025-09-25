@@ -36,7 +36,7 @@ export default createConfig({
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
-    // zircuit: { id: 48900, rpc: process.env.PONDER_RPC_URL_48900 },
+    zircuit: { id: 48900, rpc: process.env.PONDER_RPC_URL_48900 },
   },
   contracts: {
     Morpho: {
@@ -126,6 +126,10 @@ export default createConfig({
           address: "0xE741BC7c34758b4caE05062794E8Ae24978AF432",
           startBlock: 9025669,
         },
+        zircuit: {
+          address: "0xA902A365Fe10B4a94339B5A2Dc64F60c1486a5c8",
+          startBlock: 14640172,
+        },
         /* 
         bitlayer: {
           address: "0xAeA7eFF1bD3c875c18ef50F0387892dF181431C6",
@@ -146,10 +150,6 @@ export default createConfig({
         hyperevm: {
            address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
            startBlock: 1988429,
-        },
-        zircuit: {
-          address: "0xA902A365Fe10B4a94339B5A2Dc64F60c1486a5c8",
-          startBlock: 14640172,
         }, */
       },
     },
@@ -246,6 +246,10 @@ export default createConfig({
           address: "0x4DBB3a642a2146d5413750Cca3647086D9ba5F12",
           startBlock: 9025733,
         },
+        zircuit: {
+          address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
+          startBlock: 14812082,
+        },
         /*
         bitlayer: {
           address: "0xb95De4a9C81Ba6240378F383f88592d30937d048",
@@ -266,10 +270,6 @@ export default createConfig({
         hyperevm: {
            address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
            startBlock: 1988677,
-        },
-        zircuit: {
-          address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
-          startBlock: 14812082,
         }, */
       },
     },
@@ -450,6 +450,14 @@ export default createConfig({
           }),
           startBlock: 9025733,
         },
+        zircuit: {
+          address: factory({
+            address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 14812082,
+        },
         /*
         bitlayer: {
           address: factory({
@@ -490,14 +498,6 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 1988677,
-        },
-        zircuit: {
-          address: factory({
-            address: "0xd2c9068aD68c4c9F1A4fE1Ea650BdFE13DC5EaF1",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 14812082,
         }, */
       },
     },
@@ -588,6 +588,10 @@ export default createConfig({
           address: "0x34E99D604751a72cF8d0CFDf87069292d82De472",
           startBlock: 9025669,
         },
+        zircuit: {
+          address: "0xBADb1809ecF658F36e31CcC980F72de029e1cE46",
+          startBlock: 14640172,
+        },
         /* 
         bitlayer: {
           address: "0xefB565442B9Eb740B50Cf928C14d21c0111254F9",
@@ -608,10 +612,6 @@ export default createConfig({
         hyperevm: {
           address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
           startBlock: 1988429,
-        },
-        zircuit: {
-          address: "0xBADb1809ecF658F36e31CcC980F72de029e1cE46",
-          startBlock: 14640172,
         }, */
       },
     },
@@ -702,6 +702,10 @@ export default createConfig({
           address: "0xe3cE2051a24e58DBFC0eFBe4c2d9e89c5eAe4695",
           startBlock: 10273494,
         },
+        zircuit: {
+          address: "0x09d7629E82DdD80890495672201fe5FE1f909B0b",
+          startBlock: 14812316,
+        },
         /*
         bitlayer: {
           address: "0x4E28CAE07A008FF2D7D345992C969118eb253CD6",
@@ -722,10 +726,6 @@ export default createConfig({
         hyperevm: {
           address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
           startBlock: 1988956,
-        },
-        zircuit: {
-          address: "0x09d7629E82DdD80890495672201fe5FE1f909B0b",
-          startBlock: 14812316,
         }, */
       },
     },
