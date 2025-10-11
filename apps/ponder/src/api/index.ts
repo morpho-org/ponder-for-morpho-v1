@@ -5,6 +5,7 @@ import {
   client,
   eq,
   graphql,
+  inArray,
   isNotNull,
   type ReadonlyDrizzle,
   replaceBigInts as replaceBigIntsBase,
@@ -85,6 +86,26 @@ app.post("/chain/:chainId/withdraw-queue/:address", async (c) => {
 
   const withdrawQueue = vault?.withdrawQueue.map((x) => x.marketId).filter((x) => x != null) ?? [];
   return c.json(replaceBigInts(withdrawQueue));
+});
+
+/**
+ * Fetch a given vault list's whitelisted markets.
+ */
+app.post("/chain/:chainId/vaults-whitelisted-markets", async (c) => {
+  const { chainId } = c.req.param();
+  const { vaults: vaultsRaw } = (await c.req.json()) as unknown as { vaults: Address[] };
+
+  const vaults = await db.query.vault.findMany({
+    where: and(eq(schema.vault.chainId, Number(chainId)), inArray(schema.vault.address, vaultsRaw)),
+    with: {
+      withdrawQueue: { where: isNotNull(schema.vaultWithdrawQueueItem.marketId) },
+    },
+  });
+
+  const whitelistedMarkets = vaults
+    .flatMap((x) => x.withdrawQueue.map((x) => x.marketId))
+    .filter((x) => x != null);
+  return c.json(replaceBigInts(whitelistedMarkets));
 });
 
 /**
