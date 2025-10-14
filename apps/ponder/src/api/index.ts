@@ -5,6 +5,7 @@ import {
   client,
   eq,
   graphql,
+  inArray,
   isNotNull,
   type ReadonlyDrizzle,
   replaceBigInts as replaceBigIntsBase,
@@ -85,6 +86,28 @@ app.post("/chain/:chainId/withdraw-queue/:address", async (c) => {
 
   const withdrawQueue = vault?.withdrawQueue.map((x) => x.marketId).filter((x) => x != null) ?? [];
   return c.json(replaceBigInts(withdrawQueue));
+});
+
+/**
+ * Fetch the set of markets from all vaults' withdraw queues.
+ */
+app.post("/chain/:chainId/withdraw-queue-set", async (c) => {
+  const { chainId } = c.req.param();
+  const { vaults: vaultsRaw } = (await c.req.json()) as unknown as { vaults: Address[] };
+
+  const withdrawQueueItems = await db.query.vaultWithdrawQueueItem.findMany({
+    where: (row) =>
+      and(
+        eq(row.chainId, Number(chainId)),
+        isNotNull(row.marketId),
+        inArray(row.address, vaultsRaw),
+      ),
+  });
+
+  const withdrawQueueSet = new Set(withdrawQueueItems.map((item) => item.marketId));
+  withdrawQueueSet.delete(null);
+
+  return c.json(replaceBigInts([...withdrawQueueSet]));
 });
 
 /**
