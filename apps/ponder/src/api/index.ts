@@ -91,7 +91,7 @@ app.post("/chain/:chainId/withdraw-queue/:address", async (c) => {
 /**
  * Fetch the set of markets from all vaults' withdraw queues.
  */
-app.post("/chain/:chainId/markets", async (c) => {
+app.post("/chain/:chainId/withdraw-queue-set", async (c) => {
   const { chainId } = c.req.param();
   const { vaults: vaultsRaw } = (await c.req.json()) as unknown as { vaults: Address[] };
 
@@ -104,10 +104,10 @@ app.post("/chain/:chainId/markets", async (c) => {
       ),
   });
 
-  const marketsSet = new Set(withdrawQueueItems.map((item) => item.marketId));
-  marketsSet.delete(null);
+  const withdrawQueueSet = new Set(withdrawQueueItems.map((item) => item.marketId));
+  withdrawQueueSet.delete(null);
 
-  return c.json(replaceBigInts([...marketsSet]));
+  return c.json(replaceBigInts([...withdrawQueueSet]));
 });
 
 /**
