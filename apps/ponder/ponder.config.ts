@@ -27,12 +27,13 @@ export default createConfig({
     // flame: { id: 253368190, rpc: process.env.PONDER_RPC_URL_253368190 },
     fraxtal: { id: 252, rpc: process.env.PONDER_RPC_URL_252 },
     hemi: { id: 43111, rpc: process.env.PONDER_RPC_URL_43111 },
-    // hyperevm: { id: 999, rpc: process.env.PONDER_RPC_URL_999 },
+    hyperevm: { id: 999, rpc: process.env.PONDER_RPC_URL_999 },
     ink: { id: 57073, rpc: process.env.PONDER_RPC_URL_57073 },
     lisk: { id: 1135, rpc: process.env.PONDER_RPC_URL_1135 },
     mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
     plume: { id: 98866, rpc: process.env.PONDER_RPC_URL_98866 },
     scroll: { id: 534352, rpc: process.env.PONDER_RPC_URL_534352 },
+    sei: { id: 1329, rpc: process.env.PONDER_RPC_URL_1329 },
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
@@ -94,6 +95,10 @@ export default createConfig({
           address: "0xa4Ca2c2e25b97DA19879201bA49422bc6f181f42",
           startBlock: 1188872,
         },
+        hyperevm: {
+          address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
+          startBlock: 1988429,
+        },
         ink: {
           address: "0x857f3EefE8cbda3Bc49367C996cd664A880d3042",
           startBlock: 4078776,
@@ -113,6 +118,10 @@ export default createConfig({
         scroll: {
           address: "0x2d012EdbAdc37eDc2BC62791B666f9193FDF5a55",
           startBlock: 12842868,
+        },
+        sei: {
+          address: "0xc9cDAc20FCeAAF616f7EB0bb6Cd2c69dcfa9094c",
+          startBlock: 166036723,
         },
         soneium: {
           address: "0xE75Fc5eA6e74B824954349Ca351eb4e671ADA53a",
@@ -146,10 +155,6 @@ export default createConfig({
         flame: {
           address: "0x63971484590b054b6Abc4FEe9F31BC6F68CfeC04",
           startBlock: 5991116,
-        },
-        hyperevm: {
-           address: "0x68e37dE8d93d3496ae143F2E900490f6280C57cD",
-           startBlock: 1988429,
         }, */
       },
     },
@@ -214,6 +219,10 @@ export default createConfig({
           address: "0x8e52179BeB18E882040b01632440d8Ca0f01da82",
           startBlock: 1188885,
         },
+        hyperevm: {
+          address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
+          startBlock: 1988677,
+        },
         ink: {
           address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
           startBlock: 4078830,
@@ -233,6 +242,10 @@ export default createConfig({
         scroll: {
           address: "0x56b65742ade55015e6480959808229Ad6dbc9295",
           startBlock: 12842903,
+        },
+        sei: {
+          address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
+          startBlock: 168896078,
         },
         soneium: {
           address: "0x7026b436f294e560b3C26E731f5cac5992cA2B33",
@@ -266,10 +279,6 @@ export default createConfig({
         flame: {
           address: "0xf2BD176D3A89f6E9f6D0c7F17C4Ae6A3515007a8",
           startBlock: 5991179,
-        },
-        hyperevm: {
-           address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
-           startBlock: 1988677,
         }, */
       },
     },
@@ -386,6 +395,14 @@ export default createConfig({
           }),
           startBlock: 1188885,
         },
+        hyperevm: {
+          address: factory({
+            address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 1988677,
+        },
         ink: {
           address: factory({
             address: "0xd3f39505d0c48AFED3549D625982FdC38Ea9904b",
@@ -425,6 +442,14 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 12842903,
+        },
+        sei: {
+          address: factory({
+            address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
+            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+            parameter: "metaMorpho",
+          }),
+          startBlock: 168896078,
         },
         soneium: {
           address: factory({
@@ -490,14 +515,6 @@ export default createConfig({
             parameter: "metaMorpho",
           }),
           startBlock: 5991179,
-        },
-        hyperevm: {
-          address: factory({
-            address: "0xec051b19d654C48c357dC974376DeB6272f24e53",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 1988677,
         }, */
       },
     },
@@ -556,6 +573,10 @@ export default createConfig({
           address: "0xdEbdEa31624552DF904A065221cD14088ABDeD70",
           startBlock: 1188872,
         },
+        hyperevm: {
+          address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
+          startBlock: 1988429,
+        },
         ink: {
           address: "0x9515407b1512F53388ffE699524100e7270Ee57B",
           startBlock: 4078776,
@@ -575,6 +596,10 @@ export default createConfig({
         scroll: {
           address: "0xa5EA7500A27C0079961D93366A6e93aafF18CB90",
           startBlock: 12842868,
+        },
+        sei: {
+          address: "0x6eFA8e3Aa8279eB2fd46b6083A9E52dA72EA56c4",
+          startBlock: 166036723,
         },
         soneium: {
           address: "0x68F9b666b984527A7c145Db4103Cc6d3171C797F",
@@ -608,10 +633,6 @@ export default createConfig({
         flame: {
           address: "0x69b29378a45B46A5c68a5436dCfF6C301E923833",
           startBlock: 5991116,
-        },
-        hyperevm: {
-          address: "0xD4a426F010986dCad727e8dd6eed44cA4A9b7483",
-          startBlock: 1988429,
         }, */
       },
     },
@@ -670,6 +691,10 @@ export default createConfig({
           address: "0x40F2896C551194e364F7C846046C34d8a9FE97e4",
           startBlock: 1188907,
         },
+        hyperevm: {
+          address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
+          startBlock: 1988956,
+        },
         ink: {
           address: "0x30607fEa77168d2c0401B6f60F0B40E32F9339E3",
           startBlock: 6385077,
@@ -689,6 +714,10 @@ export default createConfig({
         scroll: {
           address: "0xeD960178e4aDA0296786Fa79D84e8FDF7bd44B25",
           startBlock: 13504587,
+        },
+        sei: {
+          address: "0x65eD61058cEB4895B7d62437BaCEA39b04f6D27B",
+          startBlock: 168897284,
         },
         soneium: {
           address: "0xcBD0710425613d666C5Ffb4dE2eE73554F21c34B",
@@ -722,10 +751,6 @@ export default createConfig({
         flame: {
           address: "0x78acCefb2A81a5827C672080cB0b9C98b07d39C4",
           startBlock: 5991315,
-        },
-        hyperevm: {
-          address: "0x1b6782Ac7A859503cE953FBf4736311CC335B8f0",
-          startBlock: 1988956,
         }, */
       },
     },
