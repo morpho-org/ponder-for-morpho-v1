@@ -149,7 +149,7 @@ export const vault = onchainTable(
     decimalsOffset: t.integer().notNull(),
 
     // Storage
-    // ⛌ slot 0: _balances mapping(address => uint256)
+    // ✔︎ slot 0: _balances mapping(address => uint256)
     // ⛌ slot 1: _allowances mapping(address => mapping(address => uint256))
     totalSupply: t.bigint().notNull().default(0n), // slot 2: _totalSupply uint256
     // ⛌ slot 3: _name string
@@ -186,9 +186,31 @@ export const vault = onchainTable(
 );
 
 export const vaultRelations = relations(vault, ({ many }) => ({
+  balances: many(vaultBalance),
   config: many(vaultConfigItem),
   supplyQueue: many(vaultSupplyQueueItem),
   withdrawQueue: many(vaultWithdrawQueueItem),
+}));
+
+// `vault._balances`
+export const vaultBalance = onchainTable(
+  "vault_balance",
+  (t) => ({
+    chainId: t.integer().notNull(),
+    vault: t.hex().notNull(),
+    user: t.hex().notNull(),
+    shares: t.bigint().notNull().default(0n),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.chainId, table.vault, table.user] }),
+    vaultIdx: index().on(table.chainId, table.vault),
+  }),
+);
+export const vaultBalanceRelations = relations(vaultBalance, ({ one }) => ({
+  vault: one(vault, {
+    fields: [vaultBalance.chainId, vaultBalance.vault],
+    references: [vault.chainId, vault.address],
+  }),
 }));
 
 // `vault.config` and `vault.pendingCap`
