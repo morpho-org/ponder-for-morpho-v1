@@ -341,8 +341,9 @@ ponder.on("MetaMorpho:Transfer", async ({ event, context }) => {
   const pk = {
     chainId: context.chain.id,
     vault: event.log.address,
-    user: event.args.to,
   };
+
+  if (event.args.value === 0n) return;
 
   if (event.args.from === zeroAddress) {
     await context.db
@@ -351,7 +352,7 @@ ponder.on("MetaMorpho:Transfer", async ({ event, context }) => {
   } else {
     // Not a mint, so we need to subtract from `from`'s balance
     await context.db
-      .update(vaultBalance, pk)
+      .update(vaultBalance, { ...pk, user: event.args.from })
       .set((row) => ({ shares: row.shares - event.args.value }));
   }
 
@@ -363,7 +364,7 @@ ponder.on("MetaMorpho:Transfer", async ({ event, context }) => {
     // Not a burn, so we need to add to `to`'s balance
     await context.db
       .insert(vaultBalance)
-      .values({ ...pk, shares: event.args.value })
+      .values({ ...pk, user: event.args.to, shares: event.args.value })
       .onConflictDoUpdate((row) => ({ shares: row.shares + event.args.value }));
   }
 });
