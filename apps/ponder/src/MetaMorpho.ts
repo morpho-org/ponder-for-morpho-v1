@@ -1,6 +1,7 @@
 import { ponder } from "ponder:registry";
 import {
   vault,
+  vaultBalance,
   vaultConfigItem,
   vaultSupplyQueueItem,
   vaultWithdrawQueueItem,
@@ -337,14 +338,33 @@ ponder.on("MetaMorpho:SetWithdrawQueue", async ({ event, context }) => {
 //////////////////////////////////////////////////////////////*/
 
 ponder.on("MetaMorpho:Transfer", async ({ event, context }) => {
+  const pk = {
+    chainId: context.chain.id,
+    vault: event.log.address,
+    user: event.args.to,
+  };
+
   if (event.args.from === zeroAddress) {
     await context.db
       .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set((row) => ({ totalSupply: row.totalSupply + event.args.value }));
-  } else if (event.args.to === zeroAddress) {
+  } else {
+    // Not a mint, so we need to subtract from `from`'s balance
+    await context.db
+      .update(vaultBalance, pk)
+      .set((row) => ({ shares: row.shares - event.args.value }));
+  }
+
+  if (event.args.to === zeroAddress) {
     await context.db
       .update(vault, { chainId: context.chain.id, address: event.log.address })
       .set((row) => ({ totalSupply: row.totalSupply - event.args.value }));
+  } else {
+    // Not a burn, so we need to add to `to`'s balance
+    await context.db
+      .insert(vaultBalance)
+      .values({ ...pk, shares: event.args.value })
+      .onConflictDoUpdate((row) => ({ shares: row.shares + event.args.value }));
   }
 });
 
