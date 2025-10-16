@@ -1,3 +1,4 @@
+import { ChainId } from "@morpho-org/blue-sdk";
 import { ponder } from "ponder:registry";
 import { authorization, market, position } from "ponder:schema";
 
@@ -14,11 +15,32 @@ import { authorization, market, position } from "ponder:schema";
 ponder.on("Morpho:CreateMarket", async ({ event, context }) => {
   // `CreateMarket` can only fire once for a given `{ chainId, id }`,
   // so we can insert without any `onConflict` handling.
+
+  // Due to custom fee added on BEND codebase, we need to check
+  // if the market has been already created by `SetFee`, if so, update the market
+  // with the value taken by CreateMarketEvent
+  const marketId = event.args.id;
+  const marketRes = await context.db.find(market, { chainId: context.chain.id, id: marketId })
+
+  if (marketRes != null) {
+    await context.db.update(market, {
+      chainId: context.chain.id,
+      id: marketId
+    })
+      .set({
+        loanToken: event.args.marketParams.loanToken,
+        collateralToken: event.args.marketParams.collateralToken,
+        oracle: event.args.marketParams.oracle,
+        irm: event.args.marketParams.irm,
+        lltv: event.args.marketParams.lltv,
+        lastUpdate: event.block.timestamp,
+      });
+    return;
+  }
+
   await context.db.insert(market).values({
-    // primary key
     chainId: context.chain.id,
-    id: event.args.id,
-    // `MarketParams` struct
+    id: marketId,
     loanToken: event.args.marketParams.loanToken,
     collateralToken: event.args.marketParams.collateralToken,
     oracle: event.args.marketParams.oracle,
@@ -27,10 +49,30 @@ ponder.on("Morpho:CreateMarket", async ({ event, context }) => {
     // `Market` struct (unspecified fields default to 0n)
     lastUpdate: event.block.timestamp,
   });
+
 });
 
 ponder.on("Morpho:SetFee", async ({ event, context }) => {
-  // Row must exist because `SetFee` cannot preceed `CreateMarket`.
+  const marketId = event.args.id;
+  const marketRes = await context.db.find(market, { chainId: context.chain.id, id: marketId });
+
+  // On BEND codebase, SetFee is emitted before CreateMarket.
+  // Create a market instance with Id and then update on next event CreateMarket
+  if (marketRes == null) {
+    await context.db.insert(market).values({
+      chainId: context.chain.id,
+      id: marketId,
+      loanToken: '0x0',
+      collateralToken: '0x0',
+      oracle: '0x0',
+      irm: '0x0',
+      lltv: 0n,
+      lastUpdate: event.block.timestamp,
+      fee: event.args.newFee
+    })
+    return
+  }
+
   await context.db
     .update(market, { chainId: context.chain.id, id: event.args.id })
     .set({ fee: event.args.newFee, lastUpdate: event.block.timestamp });
