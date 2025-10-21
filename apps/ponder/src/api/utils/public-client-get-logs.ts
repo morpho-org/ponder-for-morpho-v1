@@ -33,14 +33,14 @@ export async function publicClientGetLogs(
     initialBackoffMs?: number;
     /** Max backoff cap in milliseconds. Default: 5_000 */
     maxBackoffMs?: number;
-    /** The block range above which no retries are performed. Default: 10_000 */
+    /** The block range above which no retries are performed. Default: 2_000 */
     blockRangeRetryLevel?: bigint;
   },
 ): Promise<RpcLog[]> {
   const maxRetries = opts.maxRetries ?? 3;
   const initialBackoffMs = opts.initialBackoffMs ?? 100;
   const maxBackoffMs = opts.maxBackoffMs ?? 2_000;
-  const blockRangeRetryLevel = opts.blockRangeRetryLevel ?? 5_000n;
+  const blockRangeRetryLevel = opts.blockRangeRetryLevel ?? 2_000n;
 
   const [from, to] = await Promise.all([
     resolveBlockNumber(client, opts.fromBlock ?? "earliest"),

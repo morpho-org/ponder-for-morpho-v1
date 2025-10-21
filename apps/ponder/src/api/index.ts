@@ -38,7 +38,7 @@ const app = new Hono();
 app.use(
   rateLimiter({
     windowMs: 1000,
-    limit: 10, // Limit each IP to 10 requests per second
+    limit: 20, // Limit each IP to 10 requests per second
     keyGenerator,
   }),
 );
