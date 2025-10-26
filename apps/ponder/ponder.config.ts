@@ -33,24 +33,7 @@ export default createConfig({
     mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
     plume: { id: 98866, rpc: process.env.PONDER_RPC_URL_98866 },
     scroll: { id: 534352, rpc: process.env.PONDER_RPC_URL_534352 },
-    sei: {
-      id: 1329,
-      rpc: fallback(
-        [
-          http(process.env.PONDER_RPC_URL_1329, { retryCount: 0 }),
-          ...(process.env.MORPHO_RPC_SECRET
-            ? [
-                http(
-                  `https://rpc-dev.morpho.dev/cache/evm/1329?secret=${process.env.MORPHO_RPC_SECRET}`,
-                  { retryCount: 0 },
-                ),
-              ]
-            : []),
-          http("https://sei.drpc.org", { retryCount: 0 }),
-        ],
-        { retryCount: 0 },
-      ),
-    },
+    sei: { id: 1329, rpc: process.env.PONDER_RPC_URL_1329 },
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
