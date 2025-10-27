@@ -33,7 +33,7 @@ export default createConfig({
     mode: { id: 34443, rpc: process.env.PONDER_RPC_URL_34443 },
     plume: { id: 98866, rpc: process.env.PONDER_RPC_URL_98866 },
     scroll: { id: 534352, rpc: process.env.PONDER_RPC_URL_534352 },
-    sei: { id: 1329, rpc: process.env.PONDER_RPC_URL_1329 },
+    // sei: { id: 1329, rpc: process.env.PONDER_RPC_URL_1329 },
     soneium: { id: 1868, rpc: process.env.PONDER_RPC_URL_1868 },
     sonic: { id: 146, rpc: process.env.PONDER_RPC_URL_146 },
     worldchain: { id: 480, rpc: process.env.PONDER_RPC_URL_480 },
@@ -119,10 +119,10 @@ export default createConfig({
           address: "0x2d012EdbAdc37eDc2BC62791B666f9193FDF5a55",
           startBlock: 12842868,
         },
-        sei: {
-          address: "0xc9cDAc20FCeAAF616f7EB0bb6Cd2c69dcfa9094c",
-          startBlock: 166036723,
-        },
+        // sei: {
+        //   address: "0xc9cDAc20FCeAAF616f7EB0bb6Cd2c69dcfa9094c",
+        //   startBlock: 166036723,
+        // },
         soneium: {
           address: "0xE75Fc5eA6e74B824954349Ca351eb4e671ADA53a",
           startBlock: 6440817,
@@ -243,10 +243,10 @@ export default createConfig({
           address: "0x56b65742ade55015e6480959808229Ad6dbc9295",
           startBlock: 12842903,
         },
-        sei: {
-          address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
-          startBlock: 168896078,
-        },
+        // sei: {
+        //   address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
+        //   startBlock: 168896078,
+        // },
         soneium: {
           address: "0x7026b436f294e560b3C26E731f5cac5992cA2B33",
           startBlock: 6440899,
@@ -443,14 +443,14 @@ export default createConfig({
           }),
           startBlock: 12842903,
         },
-        sei: {
-          address: factory({
-            address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
-            event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
-            parameter: "metaMorpho",
-          }),
-          startBlock: 168896078,
-        },
+        // sei: {
+        //   address: factory({
+        //     address: "0x8Dea49ec5bd5AeAc8bcf96B3E187F59354118291",
+        //     event: getAbiItem({ abi: metaMorphoFactoryAbi, name: "CreateMetaMorpho" }),
+        //     parameter: "metaMorpho",
+        //   }),
+        //   startBlock: 168896078,
+        // },
         soneium: {
           address: factory({
             address: "0x7026b436f294e560b3C26E731f5cac5992cA2B33",
@@ -597,10 +597,10 @@ export default createConfig({
           address: "0xa5EA7500A27C0079961D93366A6e93aafF18CB90",
           startBlock: 12842868,
         },
-        sei: {
-          address: "0x6eFA8e3Aa8279eB2fd46b6083A9E52dA72EA56c4",
-          startBlock: 166036723,
-        },
+        // sei: {
+        //   address: "0x6eFA8e3Aa8279eB2fd46b6083A9E52dA72EA56c4",
+        //   startBlock: 166036723,
+        // },
         soneium: {
           address: "0x68F9b666b984527A7c145Db4103Cc6d3171C797F",
           startBlock: 6440817,
@@ -715,10 +715,10 @@ export default createConfig({
           address: "0xeD960178e4aDA0296786Fa79D84e8FDF7bd44B25",
           startBlock: 13504587,
         },
-        sei: {
-          address: "0x65eD61058cEB4895B7d62437BaCEA39b04f6D27B",
-          startBlock: 168897284,
-        },
+        // sei: {
+        //   address: "0x65eD61058cEB4895B7d62437BaCEA39b04f6D27B",
+        //   startBlock: 168897284,
+        // },
         soneium: {
           address: "0xcBD0710425613d666C5Ffb4dE2eE73554F21c34B",
           startBlock: 6443359,
