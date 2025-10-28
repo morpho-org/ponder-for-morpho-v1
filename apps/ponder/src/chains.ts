@@ -28,7 +28,7 @@ const TIER_2 = [
   "celo",
   "hemi",
   "lisk",
-  // "optimism",
+  "optimism",
   "plume",
   "sei",
   "soneium",
@@ -50,8 +50,12 @@ const tiers = {
 
 type Tiers = typeof tiers;
 
-export function getChains<K extends keyof Tiers>(tier: K): Tiers[K] {
+export function getChainNames<K extends keyof Tiers>(tier: K): Tiers[K] {
   return tiers[tier];
+}
+
+export function getChains<K extends keyof Tiers>(tier: K): PickFrom<typeof chains, Tiers[K]> {
+  return pick(chains, tiers[tier]);
 }
 
 export function getPartialContract<
@@ -63,6 +67,6 @@ export function getPartialContract<
 ): Omit<Contract, "chain"> & { chain: PickFrom<Contract["chain"], Tiers[K]> } {
   return {
     ...contract,
-    chain: pick(contract.chain, getChains(tier)),
+    chain: pick(contract.chain, getChainNames(tier)),
   };
 }
