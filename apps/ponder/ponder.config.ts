@@ -9,16 +9,17 @@ import {
 } from "@/constants";
 import { getChains, getPartialContract } from "@/chains";
 
-const tier = process.env.CHAIN_TIER ?? "all";
+const tierToIndex = process.env.TIER_TO_INDEX ?? "all";
+const tierToServe = process.env.TIER_TO_SERVE ?? tierToIndex;
 
 export default createConfig({
   ordering: "multichain",
-  chains: getChains(tier),
+  chains: getChains(tierToServe),
   contracts: {
-    Morpho: getPartialContract(Morpho, tier),
-    MetaMorphoFactory: getPartialContract(MetaMorphoFactory, tier),
-    MetaMorpho: getPartialContract(MetaMorpho, tier),
-    AdaptiveCurveIRM: getPartialContract(AdaptiveCurveIRM, tier),
-    PreLiquidationFactory: getPartialContract(PreLiquidationFactory, tier),
+    Morpho: getPartialContract(Morpho, tierToIndex),
+    MetaMorphoFactory: getPartialContract(MetaMorphoFactory, tierToIndex),
+    MetaMorpho: getPartialContract(MetaMorpho, tierToIndex),
+    AdaptiveCurveIRM: getPartialContract(AdaptiveCurveIRM, tierToIndex),
+    PreLiquidationFactory: getPartialContract(PreLiquidationFactory, tierToIndex),
   },
 });
