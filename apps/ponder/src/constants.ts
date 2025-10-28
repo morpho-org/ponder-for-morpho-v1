@@ -1,4 +1,5 @@
 import { factory, type ContractConfig } from "ponder";
+import { getAbiItem } from "viem";
 import {
   abstract,
   arbitrum,
@@ -22,21 +23,20 @@ import {
   worldchain,
   zircuit,
 } from "viem/chains";
-import { getAbiItem } from "viem";
+
+import { type PonderContract, typedFromEntries } from "@/types";
 import { adaptiveCurveIrmAbi } from "~/abis/AdaptiveCurveIrm";
+import { metaMorphoAbi } from "~/abis/MetaMorpho";
 import { metaMorphoFactoryAbi } from "~/abis/MetaMorphoFactory";
 import { morphoBlueAbi } from "~/abis/MorphoBlue";
 import { preLiquidationFactoryAbi } from "~/abis/PreLiquidationFactory";
-import { metaMorphoAbi } from "~/abis/MetaMorpho";
-
-import { type PonderContract, typedFromEntries } from "@/types";
 
 function asPonderChain<chainId extends number>(
   chainId: chainId,
 ): { id: chainId; rpc: string | undefined } {
   return {
     id: chainId,
-    rpc: process.env[`PONDER_RPC_URL_${chainId}`],
+    rpc: process.env[`PONDER_RPC_URL_${chainId.toFixed(0)}`],
   };
 }
 

@@ -1,5 +1,6 @@
 import { createConfig } from "ponder";
 
+import { getChains, getPartialContract } from "@/chains";
 import {
   AdaptiveCurveIRM,
   MetaMorpho,
@@ -7,7 +8,6 @@ import {
   Morpho,
   PreLiquidationFactory,
 } from "@/constants";
-import { getChains, getPartialContract } from "@/chains";
 
 const tierToIndex = process.env.TIER_TO_INDEX ?? "all";
 const tierToServe = process.env.TIER_TO_SERVE ?? tierToIndex;

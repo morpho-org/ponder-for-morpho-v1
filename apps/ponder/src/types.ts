@@ -6,6 +6,7 @@ export type PonderContractChainEntry = NonNullable<
 
 export type PonderContractChain<K extends string> = Record<K, PonderContractChainEntry>;
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type PonderContract<K extends string> = {
   abi: ContractConfig["abi"];
   chain: PonderContractChain<K>;
