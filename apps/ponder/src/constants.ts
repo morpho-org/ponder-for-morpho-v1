@@ -11,7 +11,8 @@ import {
   lisk,
   mainnet,
   mode,
-  plume,
+  optimism,
+  plumeMainnet,
   polygon,
   scroll,
   sei,
@@ -57,7 +58,8 @@ export const chains = {
   ink: asPonderChain(ink.id),
   lisk: asPonderChain(lisk.id),
   mode: asPonderChain(mode.id),
-  plume: asPonderChain(plume.id),
+  optimism: asPonderChain(optimism.id),
+  plume: asPonderChain(plumeMainnet.id),
   scroll: asPonderChain(scroll.id),
   sei: asPonderChain(sei.id),
   soneium: asPonderChain(soneium.id),
@@ -92,6 +94,10 @@ export const Morpho = {
     arbitrum: {
       address: "0x6c247b1F6182318877311737BaC0844bAa518F5e",
       startBlock: 296446593,
+    },
+    optimism: {
+      address: "0xce95AfbB8EA029495c66020883F87aaE8864AF92",
+      startBlock: 130770075,
     },
     tac: {
       address: "0x918B9F2E4B44E20c6423105BB6cCEB71473aD35c",
@@ -200,6 +206,10 @@ export const MetaMorphoFactory = {
     arbitrum: {
       address: "0x878988f5f561081deEa117717052164ea1Ef0c82",
       startBlock: 296447195,
+    },
+    optimism: {
+      address: "0x3Bb6A6A0Bc85b367EFE0A5bAc81c5E52C892839a",
+      startBlock: 130770189,
     },
     tac: {
       address: "0xcDA78f4979d17Ec93052A84A12001fe0088AD734",
@@ -323,6 +333,10 @@ export const AdaptiveCurveIRM = {
       address: "0x937Ce2d6c488b361825D2DB5e8A70e26d48afEd5",
       startBlock: 296446593,
     },
+    optimism: {
+      address: "0x8cD70A8F399428456b29546BC5dBe10ab6a06ef6",
+      startBlock: 130770075,
+    },
     tac: {
       address: "0x7E82b16496fA8CC04935528dA7F5A2C684A3C7A3",
       startBlock: 853025,
@@ -424,6 +438,10 @@ export const PreLiquidationFactory = {
     arbitrum: {
       address: "0x635c31B5DF1F7EFbCbC07E302335Ef4230758e3d",
       startBlock: 307326238,
+    },
+    optimism: {
+      address: "0x3d05C01EE8e97361b9E19D172128255eaE5F98B9",
+      startBlock: 132139369,
     },
     tac: {
       address: "0x5851C1e423A2F93aFb821834a63cA052D19ae4Ef",
