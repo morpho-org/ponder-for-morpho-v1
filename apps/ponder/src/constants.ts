@@ -1,4 +1,4 @@
-import { factory, type ContractConfig } from "ponder";
+import { factory, loadBalance, type ContractConfig } from "ponder";
 import { fallback, getAbiItem, http, type Transport } from "viem";
 import {
   abstract,
@@ -31,17 +31,23 @@ import { metaMorphoFactoryAbi } from "~/abis/MetaMorphoFactory";
 import { morphoBlueAbi } from "~/abis/MorphoBlue";
 import { preLiquidationFactoryAbi } from "~/abis/PreLiquidationFactory";
 
+function parseRpcString(str: string): Transport {
+  if (str.startsWith("fallback")) {
+    return fallback(str.slice("fallback".length + 1, -1).split(",").map(parseRpcString));
+  }
+  if (str.startsWith("loadbalance")) {
+    return loadBalance(str.slice("loadbalance".length + 1, -1).split(",").map(parseRpcString));
+  }
+  return http(str);
+}
+
 function asPonderChain<chainId extends number>(
   chainId: chainId,
-): { id: chainId; rpc: Transport | string | undefined } {
+): { id: chainId; rpc: Transport | undefined } {
   const rpcString = process.env[`PONDER_RPC_URL_${chainId.toFixed(0)}`];
-  const rpc = rpcString?.includes(",")
-    ? fallback(rpcString.split(",").map((url) => http(url)))
-    : rpcString;
-
   return {
     id: chainId,
-    rpc,
+    rpc: rpcString ? parseRpcString(rpcString) : undefined,
   };
 }
 
