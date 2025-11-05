@@ -1,5 +1,5 @@
 import { factory, type ContractConfig } from "ponder";
-import { getAbiItem } from "viem";
+import { fallback, getAbiItem, http, type Transport } from "viem";
 import {
   abstract,
   arbitrum,
@@ -33,10 +33,15 @@ import { preLiquidationFactoryAbi } from "~/abis/PreLiquidationFactory";
 
 function asPonderChain<chainId extends number>(
   chainId: chainId,
-): { id: chainId; rpc: string | undefined } {
+): { id: chainId; rpc: Transport | string | undefined } {
+  const rpcString = process.env[`PONDER_RPC_URL_${chainId.toFixed(0)}`];
+  const rpc = rpcString?.includes(",")
+    ? fallback(rpcString.split(",").map((url) => http(url)))
+    : rpcString;
+
   return {
     id: chainId,
-    rpc: process.env[`PONDER_RPC_URL_${chainId.toFixed(0)}`],
+    rpc,
   };
 }
 
