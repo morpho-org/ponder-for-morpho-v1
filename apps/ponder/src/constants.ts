@@ -33,10 +33,20 @@ import { preLiquidationFactoryAbi } from "~/abis/PreLiquidationFactory";
 
 function parseRpcString(str: string): Transport {
   if (str.startsWith("fallback")) {
-    return fallback(str.slice("fallback".length + 1, -1).split(",").map(parseRpcString));
+    return fallback(
+      str
+        .slice("fallback".length + 1, -1)
+        .split(",")
+        .map(parseRpcString),
+    );
   }
   if (str.startsWith("loadbalance")) {
-    return loadBalance(str.slice("loadbalance".length + 1, -1).split(",").map(parseRpcString));
+    return loadBalance(
+      str
+        .slice("loadbalance".length + 1, -1)
+        .split(",")
+        .map(parseRpcString),
+    );
   }
   return http(str);
 }
