@@ -17,7 +17,6 @@ function setDifference<T>(a: T[], ...bs: T[][]): T[] {
 const TIER_1 = [
   "mainnet",
   "base",
-  "polygon",
   "unichain",
   "katana",
   "arbitrum",
