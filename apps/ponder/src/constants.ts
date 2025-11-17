@@ -79,6 +79,7 @@ export const chains = {
   ink: asPonderChain(ink.id),
   lisk: asPonderChain(lisk.id),
   mode: asPonderChain(mode.id),
+  monad: asPonderChain(143),
   optimism: asPonderChain(optimism.id),
   plume: asPonderChain(plumeMainnet.id),
   scroll: asPonderChain(scroll.id),
@@ -163,6 +164,10 @@ export const Morpho = {
     mode: {
       address: "0xd85cE6BD68487E0AaFb0858FDE1Cd18c76840564",
       startBlock: 19983370,
+    },
+    monad: {
+      address: "0xD5D960E8C380B724a48AC59E2DfF1b2CB4a1eAee",
+      startBlock: 31907457,
     },
     plume: {
       address: "0x42b18785CE0Aed7BF7Ca43a39471ED4C0A3e0bB5",
@@ -275,6 +280,10 @@ export const MetaMorphoFactory = {
     mode: {
       address: "0xae5b0884bfff430493D6C844B9fd052Af7d79278",
       startBlock: 19983443,
+    },
+    monad: {
+      address: "0x33f20973275B2F574488b18929cd7DCBf1AbF275",
+      startBlock: 32320327,
     },
     plume: {
       address: "0x2525D453D9BA13921D5aB5D8c12F9202b0e19456",
@@ -402,6 +411,10 @@ export const AdaptiveCurveIRM = {
       address: "0xE3d46Ae190Cb39ccA3655E966DcEF96b4eAe1d1c",
       startBlock: 19983370,
     },
+    monad: {
+      address: "0x09475a3D6eA8c314c592b1a3799bDE044E2F400F",
+      startBlock: 31907457,
+    },
     plume: {
       address: "0x7420302Ddd469031Cd2282cd64225cCd46F581eA",
       startBlock: 765994,
@@ -507,6 +520,10 @@ export const PreLiquidationFactory = {
     mode: {
       address: "0x249E4808264c545861e43728186a731dE7c7D745",
       startBlock: 19983599,
+    },
+    monad: {
+      address: "0x273dBC3f178D03fA9D385e61Ee1E11dCf563EE14",
+      startBlock: 32321504,
     },
     plume: {
       address: "0xF184156Cf6Ad4D3dA7F6449D40755A0f9de97ef3",

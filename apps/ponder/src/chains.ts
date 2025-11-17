@@ -34,7 +34,8 @@ const TIER_2 = [
   "worldchain",
 ] satisfies Exclude<ChainName, (typeof TIER_1)[number]>[];
 
-const TIER_3 = ["sei"] satisfies Exclude<
+// chains that should be in tiers 1/2, but have too many reorgs / RPC issues
+const TIER_3 = ["sei", "polygon"] satisfies Exclude<
   ChainName,
   (typeof TIER_1)[number] | (typeof TIER_2)[number]
 >[];
