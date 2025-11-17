@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "ponder": "^0.14.12",
+    "ponder": "^0.15.2",
     "viem": "^2.38.4"
   },
   "devDependencies": {

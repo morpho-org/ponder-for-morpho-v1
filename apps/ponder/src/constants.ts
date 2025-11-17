@@ -1,4 +1,4 @@
-import { factory, loadBalance, type ContractConfig } from "ponder";
+import { ChainConfig, factory, loadBalance, type ContractConfig } from "ponder";
 import { fallback, getAbiItem, http, type Transport } from "viem";
 import {
   abstract,
@@ -51,13 +51,13 @@ function parseRpcString(str: string): Transport {
   return http(str);
 }
 
-function asPonderChain<chainId extends number>(
-  chainId: chainId,
-): { id: chainId; rpc: Transport | undefined } {
+function asPonderChain<chainId extends number>(chainId: chainId): ChainConfig & { id: chainId } {
   const rpcString = process.env[`PONDER_RPC_URL_${chainId.toFixed(0)}`];
+  const maxRangeString = process.env[`PONDER_MAX_RANGE_${chainId.toFixed(0)}`];
   return {
     id: chainId,
     rpc: rpcString ? parseRpcString(rpcString) : undefined,
+    ...(maxRangeString ? { ethGetLogsBlockRange: Number(maxRangeString) } : {}),
   };
 }
 
