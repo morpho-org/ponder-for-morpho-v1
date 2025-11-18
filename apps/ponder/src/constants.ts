@@ -86,6 +86,7 @@ export const chains = {
   sei: asPonderChain(sei.id),
   soneium: asPonderChain(soneium.id),
   sonic: asPonderChain(sonic.id),
+  stable: asPonderChain(988),
   worldchain: asPonderChain(worldchain.id),
   zircuit: asPonderChain(zircuit.id),
 } as const;
@@ -188,6 +189,10 @@ export const Morpho = {
     sonic: {
       address: "0xd6c916eB7542D0Ad3f18AEd0FCBD50C582cfa95f",
       startBlock: 9100931,
+    },
+    stable: {
+      address: "0xa40103088A899514E3fe474cD3cc5bf811b1102e",
+      startBlock: 1504506,
     },
     worldchain: {
       address: "0xE741BC7c34758b4caE05062794E8Ae24978AF432",
@@ -304,6 +309,10 @@ export const MetaMorphoFactory = {
     sonic: {
       address: "0x0cE9e3512CB4df8ae7e265e62Fb9258dc14f12e8",
       startBlock: 9101319,
+    },
+    stable: {
+      address: "0xb4ae5673c48621189E2bEfBA96F31912032DD1AE",
+      startBlock: 1504774,
     },
     worldchain: {
       address: "0x4DBB3a642a2146d5413750Cca3647086D9ba5F12",
@@ -435,6 +444,10 @@ export const AdaptiveCurveIRM = {
       address: "0xDEfCf242226425f93d8DD0e314735C28517C473F",
       startBlock: 9100931,
     },
+    stable: {
+      address: "0x41e846FC8108b8527C1D4EDB4c9564E56442940f",
+      startBlock: 1504506,
+    },
     worldchain: {
       address: "0x34E99D604751a72cF8d0CFDf87069292d82De472",
       startBlock: 9025669,
@@ -544,6 +557,10 @@ export const PreLiquidationFactory = {
     sonic: {
       address: "0xc72129DA4CC808e955699111b8c22B22Ca8A10b8",
       startBlock: 9102286,
+    },
+    stable: {
+      address: "0x741A6604e974FeAF35a5FBb1416B3e01c33e5C0e",
+      startBlock: 1741861,
     },
     worldchain: {
       address: "0xe3cE2051a24e58DBFC0eFBe4c2d9e89c5eAe4695",

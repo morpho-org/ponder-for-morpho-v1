@@ -21,6 +21,7 @@ const TIER_1 = [
   "katana",
   "arbitrum",
   "hyperevm",
+  "monad",
 ] satisfies ChainName[];
 
 const TIER_2 = [
