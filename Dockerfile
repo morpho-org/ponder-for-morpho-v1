@@ -11,4 +11,4 @@ COPY . .
 RUN --mount=type=cache,id=pnpm0,target=/pnpm/store pnpm install --frozen-lockfile --prod --ignore-scripts
 
 ENTRYPOINT ["./node_modules/.bin/ponder"]
-CMD ["start"]
+CMD ["start", "--config", "apps/ponder/ponder.config.ts"]
