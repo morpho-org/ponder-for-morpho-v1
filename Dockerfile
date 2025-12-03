@@ -12,4 +12,4 @@ RUN --mount=type=cache,id=pnpm0,target=/pnpm/store pnpm install --frozen-lockfil
 
 WORKDIR /workspace/apps/ponder
 
-CMD ["pnpm", "ponder", "start"]
+CMD ["pnpm", "start"]
