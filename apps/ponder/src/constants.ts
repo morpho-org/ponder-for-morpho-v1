@@ -57,6 +57,7 @@ function asPonderChain<chainId extends number>(chainId: chainId): ChainConfig & 
   return {
     id: chainId,
     rpc: rpcString ? parseRpcString(rpcString) : undefined,
+    ethGetLogsBlockRange: 10000,
     ...(maxRangeString ? { ethGetLogsBlockRange: Number(maxRangeString) } : {}),
   };
 }
