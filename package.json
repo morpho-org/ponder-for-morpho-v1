@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "pnpm --filter '@ponder-template/*' lint",
-    "prepare": "husky",
+    "prepare": "command -v husky >/dev/null 2>&1 && husky || true",
     "postinstall": "for f in scripts/shim-*.cjs; do node \"$f\"; done"
   },
   "lint-staged": {
